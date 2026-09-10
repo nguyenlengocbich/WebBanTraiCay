@@ -120,4 +120,4 @@ Sau đó nhấn `F5` hoặc `Ctrl + F5` để chạy ứng dụng.
 
 **Nguyễn Lê Ngọc Bích**
 
-GitHub: [nguyenlengocbich](https://github.com/nguyenlengocbich)screenshots/admin-products.png)
+GitHub: [nguyenlengocbich](https://github.com/nguyenlengocbich)
