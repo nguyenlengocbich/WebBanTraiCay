@@ -68,7 +68,6 @@ Hệ thống sử dụng Microsoft SQL Server để lưu trữ và quản lý d�
 File cơ sở dữ liệu/script:
 
 `script.sql`
-````markdown
 ## 🚀 Cài đặt và chạy project
 
 ### 1. Clone repository
@@ -76,6 +75,29 @@ File cơ sở dữ liệu/script:
 ```bash
 git clone https://github.com/nguyenlengocbich/webchtc.git
 ```
+
+### 2. Mở project
+
+Mở file `WebBanTraiCay.sln` bằng **Visual Studio**.
+
+### 3. Cấu hình cơ sở dữ liệu
+
+- Mở **SQL Server Management Studio (SSMS)**.
+- Tạo database mới.
+- Mở file `script.sql` trong repository.
+- Chạy script để tạo cơ sở dữ liệu và dữ liệu mẫu.
+- Kiểm tra và cập nhật `connection string` trong project nếu cần.
+
+### 4. Chạy project
+
+Trong Visual Studio:
+
+```text
+Build → Build Solution
+```
+
+Sau đó nhấn `F5` hoặc `Ctrl + F5` để chạy ứng dụng.
+
 ## 📷 Screenshots
 
 ### Trang chủ
@@ -93,3 +115,9 @@ git clone https://github.com/nguyenlengocbich/webchtc.git
 ### Thống kê
 
 ![Thống kê](screenshots/statistics.png)
+
+## 👨‍💻 Tác giả
+
+**Nguyễn Lê Ngọc Bích**
+
+GitHub: [nguyenlengocbich](https://github.com/nguyenlengocbich)screenshots/admin-products.png)
