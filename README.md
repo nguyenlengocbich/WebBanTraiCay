@@ -68,13 +68,14 @@ Hệ thống sử dụng Microsoft SQL Server để lưu trữ và quản lý d�
 File cơ sở dữ liệu/script:
 
 `script.sql`
+````markdown
 ## 🚀 Cài đặt và chạy project
 
 ### 1. Clone repository
 
 ```bash
 git clone https://github.com/nguyenlengocbich/webchtc.git
-````markdown
+```
 ## 📷 Screenshots
 
 ### Trang chủ
