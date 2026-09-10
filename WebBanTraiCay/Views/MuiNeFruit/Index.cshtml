@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<!-- Carousel Start -->
+<div class="container-fluid carousel bg-light px-0">
+    <div class="row g-0 justify-content-center">
+        <div class="col-12 col-lg-7 col-xl-9">
+            <div class="header-carousel owl-carousel bg-light py-5">
+                <div class="row g-0 header-carousel-item align-items-center">
+                    <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
+                        <img src="~/Hinh/anh2.png" class="img-fluid w-100" alt="Image">
+                    </div>
+                    <div class="col-xl-6 carousel-content p-4">
+                        <h4 class="text-uppercase fw-bold mb-4 wow fadeInRight" data-wow-delay="0.1s"
+                            style="letter-spacing: 3px;">
+                            Giao hàng tận nơi
+                        </h4>
+                        <h1 class="display-3 text-capitalize mb-4 wow fadeInRight" data-wow-delay="0.3s">
+                            Thanh toán tại nhà
+                        </h1>
+                        <a class="btn btn-primary rounded-pill py-3 px-5 wow fadeInRight" data-wow-delay="0.7s"
+                           href="@Url.Action("Shop","MuiNeFruit")">Mua ngay</a>
+                    </div>
+                </div>
+                <div class="row g-0 header-carousel-item align-items-center">
+                    <div class="col-xl-6 carousel-img wow fadeInLeft" data-wow-delay="0.1s">
+                        <img src="~/Hinh/anh3.png" class="img-fluid w-100" alt="Image">
+                    </div>
+                    <div class="col-xl-6 carousel-content p-4">
+                        <h4 class="text-uppercase fw-bold mb-4 wow fadeInRight" data-wow-delay="0.1s"
+                            style="letter-spacing: 3px;">
+                            Mặt hàng đa dạng - Giá cả hợp lý
+                        </h4>
+                        <h1 class="display-3 text-capitalize mb-4 wow fadeInRight" data-wow-delay="0.3s">
+                            Trái cây tươi ngon - Tự nhiên
+                        </h1>
+                        <a class="btn btn-primary rounded-pill py-3 px-5 wow fadeInRight" data-wow-delay="0.7s"
+                           href="@Url.Action("Shop","MuiNeFruit")">Mua ngay</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Carousel End -->
+@Html.Action("Service")
+<!-- Our Products Start -->
+<div class="container-fluid product py-5">
+    <div class="container py-5">
+        <div class="tab-class">
+            <div class="row g-4">
+                <div class="mx-auto text-center mb-5" style="max-width: 700px;">
+                    <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius wow fadeInUp"
+                        data-wow-delay="0.1s">
+                        Mặt Hàng Mới
+                    </h4>
+                    <p class="mb-0 wow fadeInUp" data-wow-delay="0.2s">
+                          Đánh thức vị giác với loạt trái cây tươi mới, giàu vitamin vừa về tại MuiNeFruit.
+                        Mời bạn ghé xem để chọn ngay những thức quà ngọt lành cho gia đình!
+                    </p>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="row g-4" id="danh-sach-san-pham1">
+                    @Html.Action("Loadmore", new { count = 0, loaiload = "New" })
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="mx-auto text-center mb-5" style="max-width: 700px;">
+                    <input id="loadmore1" value="New" hidden />
+                    <button id="btn-load-more1" class="btn btn-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius wow fadeInUp" data-wow-delay="0.1s">
+                        Xem thêm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid product py-5">
+    <div class="container py-5">
+        <div class="tab-class">
+            <div class="row g-4">
+                <div class="mx-auto text-center mb-5" style="max-width: 700px;">
+                    <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius wow fadeInUp"
+                        data-wow-delay="0.1s">
+                        Mặt Hàng Bán Chạy
+                    </h4>
+                    <p class="mb-0 wow fadeInUp" data-wow-delay="0.2s">
+                        Top sản phẩm "cháy hàng" liên tục tại MuiNeFruit – Đảm bảo độ tươi ngon và hương vị chuẩn nhất. 
+                        Đừng bỏ lỡ những loại trái cây đặc sản đang được săn đón nhiệt tình này nhé!
+                    </p>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="row g-4" id="danh-sach-san-pham2">
+                    @Html.Action("Loadmore", new { count = 0, loaiload = "Sale" })
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="mx-auto text-center mb-5" style="max-width: 700px;">
+                    <input id="loadmore2" value="Sale" hidden />
+                    <button id="btn-load-more2" class="btn btn-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius wow fadeInUp" data-wow-delay="0.1s">
+                        Xem thêm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid product py-5">
+    <div class="container py-5">
+        <div class="tab-class">
+            <div class="row g-4">
+                <div class="mx-auto text-center mb-5" style="max-width: 700px;">
+                    <h4 class="text-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius wow fadeInUp"
+                        data-wow-delay="0.1s">
+                        Tất Cả Mặt Hàng
+                    </h4>
+                    <p class="mb-0 wow fadeInUp" data-wow-delay="0.2s">
+                        Các loại trái cây tươi ngon đang có mặt tại cửa hàng, cam kết nguồn gốc rõ ràng và an toàn tuyệt đối.
+                        Thỏa sức lựa chọn thực phẩm xanh - sạch - lành cho sức khỏe cả gia đình ngay tại đây!
+                    </p>
+                </div>
+            </div>
+            <div class="tab-content">
+                <div class="row g-4" id="danh-sach-san-pham3">
+                    @Html.Action("Loadmore", new { count = 0, loaiload = "All" })
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="mx-auto text-center mb-5" style="max-width: 700px;">
+                    <input id="loadmore3" value="All" hidden />
+                    <button id="btn-load-more3" class="btn btn-primary mb-4 border-bottom border-primary border-2 d-inline-block p-2 title-border-radius wow fadeInUp" data-wow-delay="0.1s">
+                        Xem thêm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Products End -->
+@section Scripts{
+    <script>
+    var currentSkip1 = 8;
+    var currentSkip2 = 8;
+    var currentSkip3 = 8;
+    $('#btn-load-more1').click(function () {
+        var loaiload = $('#loadmore1').val();
+        $.ajax({
+            url: '@Url.Action("Loadmore", "MuiNeFruit")',
+            type: 'POST',
+            data: { count: currentSkip1,loaiload:loaiload },
+            success: function (data) {
+                if (data.trim() === "") {
+                    $('#btn-load-more1').text("Hết mặt hàng").addClass("disabled");
+                } else {
+                        $('#danh-sach-san-pham1').append(data)  ;
+                        currentSkip1 += 8;
+                }
+            }
+        });
+    });
+    $('#btn-load-more2').click(function () {
+    var loaiload = $('#loadmore2').val();
+    $.ajax({
+        url: '@Url.Action("Loadmore", "MuiNeFruit")',
+        type: 'POST',
+        data: { count: currentSkip2,loaiload:loaiload },
+        success: function (data) {
+            if (data.trim() === "") {
+                $('#btn-load-more2').text("Hết mặt hàng").addClass("disabled");
+            } else {
+                    $('#danh-sach-san-pham2').append(data);
+                currentSkip2 += 8;
+            }
+        }
+    });
+    });
+    $('#btn-load-more3').click(function () {
+    var loaiload = $('#loadmore3').val();
+    $.ajax({
+        url: '@Url.Action("Loadmore", "MuiNeFruit")',
+        type: 'POST',
+        data: { count: currentSkip3,loaiload:loaiload },
+        success: function (data) {
+            if (data.trim() === "") {
+                $('#btn-load-more3').text("Hết mặt hàng").addClass("disabled");
+            } else {
+                    $('#danh-sach-san-pham3').append(data);
+                    currentSkip3 += 8;
+            }
+        }
+    });
+});
+    </script>
+}

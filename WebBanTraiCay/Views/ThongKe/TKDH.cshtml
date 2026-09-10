@@ -1,0 +1,157 @@
+﻿
+@{
+    ViewBag.Title = "TKDH";
+}
+@section Scripts{
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+	    const mangmh = @Html.Raw(ViewBag.tenmh);
+        const soluong = @Html.Raw(ViewBag.soluongdat);
+	    const tenmhht = [];
+	    for (var i = 0; i < mangmh.length; i++) {
+            const tenmh = mangmh[i];
+            const cactu = tenmh.split(' ');
+            if (cactu.length > 1) {
+                const dau = cactu.slice(0, Math.ceil(cactu.length / 3)).join(' ');
+                const giua = cactu.slice(Math.ceil(cactu.length / 3),Math.ceil(cactu.length / 3)*2).join(' ');
+                const sau = cactu.slice(Math.ceil(cactu.length / 3)*2).join(' ');
+                tenmhht.push([dau,giua, sau]);
+            } else {
+                tenmhht.push([tenmh]);
+            }
+        };
+        var options1 = {
+            chart: { type: 'bar', height: 315, fontFamily: 'Verdana, sans-serif',style:{fontSize:'13px'} },
+            series: [{ name: 'Số Lượng Đặt', data: soluong}],
+            xaxis: { categories: tenmhht,title: {text: 'Số Lượng Đặt'},labels: {rotate: 0, style:{fontSize:'11px'}}},
+		    yaxis: {title: {text: 'Tên Mặt Hàng'}},
+		    plotOptions: {bar: {horizontal: true}},
+		    tooltip: {x: { formatter: function(val) {return val;}}},
+        };
+        new ApexCharts(document.querySelector("#chart_divmh"), options1).render();
+        const pieloai = @Html.Raw(ViewBag.pieloai);
+        const piesll = @Html.Raw(ViewBag.piesll);
+        var options3 = {
+            chart: { type: 'pie', height: 307, fontFamily: 'Verdana, sans-serif' },
+            series: piesll,
+            labels: pieloai,
+        };
+    new ApexCharts(document.querySelector("#chart_divlmh"), options3).render();
+    function thongke() {
+        var id = $("#tkdh").val();;
+        $.ajax({
+            url: '@Url.Action("TKDH", "ThongKe")',
+            type: 'POST',
+            data: {
+                id : id
+            },
+            success: function (result) {
+                $("#chart_divthang").html("");
+                var options4 = {
+                    chart: { type: 'bar', fontFamily: 'Verdana, sans-serif',stacked: true, height: 600,toolbar: {tools: {selection: false,zoom: false,zoomin: false,zoomout: false,pan: false, reset: false}},zoom:{enabled:false}},
+                    series: result.series,
+                    xaxis: { categories: result.ltk},
+		            stroke: {width: 2}
+                };
+                new ApexCharts(document.querySelector("#chart_divthang"), options4).render();
+            }
+    });
+    }
+    thongke();
+    $("#tkdh").change(thongke);
+    });
+    </script>
+}
+<div class="container">
+    <div class="page-inner">
+        <div class="row">
+            <div class="d-flex col-md-9 align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                <div style="vertical-align: middle">
+                    <h3 class="fw-bold mb-3">Thống kê đơn hàng</h3>
+                </div>
+            </div>
+            <div class="col-md-3" style="text-align: right; vertical-align: middle">
+                @Html.ActionLink("Quay Lại", "Index")
+            </div>
+        </div>
+        <div class="row row-card-no-pd">
+            <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between" style="align-items:center">
+                            <div>
+                                <h6><b>Tổng số đơn hàng được đặt</b></h6>
+                            </div>
+                            <h4 class="text-info fw-bold">@ViewBag.slt Đơn hàng</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between" style="align-items:center">
+                            <div>
+                                <h6><b>Tổng số đơn hàng đã thanh toán</b></h6>
+                            </div>
+                            <h4 class="text-success fw-bold">@ViewBag.sltt</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-xl-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between" style="align-items:center">
+                            <div>
+                                <h6><b>Tổng số đơn hàng đã bị hủy</b></h6>
+                            </div>
+                            <h4 class="text-danger fw-bold">@ViewBag.sldh</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-header"><h5>Biểu Đồ Top 5 Mặt Hàng Được Đặt Nhiều Nhất Trong Tháng</h5></div>
+                    <div class="card-body">
+                        <div id="chart_divmh" style="width: 100%; height:315px; max-width:100%; margin:auto"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header"><h5>Biểu Đồ Tỉ Suất Đơn Hàng Được Đặt Theo Loại Mặt Hàng</h5></div>
+                    <div class="card-body">
+                        <div id="chart_divlmh" style="width: 100%; height:330px; max-width:100%; margin:auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">                       
+                        <div class="row">
+                            <div class="col-md-12">
+                                <select id="tkdh" class="form-control select-tk" style="font-size: 1.25rem;text-align:center;min-width: 100%; border: none; background-color: inherit">
+                                    <option value="dht" style="font-size: 1.25rem">Biểu Đồ Số Lượng Đơn Hàng Đã Thanh Toán Theo Từng Tháng</option>
+                                    <option value="dhq" style="font-size: 1.25rem">Biểu Đồ Số Lượng Đơn Hàng Đã Thanh Toán Theo Từng Quý</option>
+                                    <option value="dhn" style="font-size: 1.25rem">Biểu Đồ Số Lượng Đơn Hàng Đã Thanh Toán Theo Từng Năm</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart_divthang" style="width: 100%; height:600px; max-width:100%; margin:auto"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

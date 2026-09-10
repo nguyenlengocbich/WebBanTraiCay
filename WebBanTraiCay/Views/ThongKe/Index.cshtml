@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "ThongKe";
+}
+<div class="container">
+    <div class="page-inner">
+        <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+            <div>
+                <h3 class="fw-bold mb-3">Thống kê</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                @Html.ActionLink("Thống Kê Đơn Hàng", "TKDH",new { area = "" },new { @class = "btn btn-lg btn-info", @style = "width:100%; height:220px;display: flex;justify-content: center;align-items: center; font-size: 28px;" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                @Html.ActionLink("Thống Kê Nhập Hàng", "TKNH", new { area = "" }, new { @class = "btn btn-lg btn-info", @style = "width:100%; height:220px;display: flex;justify-content: center;align-items: center; font-size: 28px;" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                @Html.ActionLink("Thống Kê Doanh Thu", "TKDT", new { area = "" }, new { @class = "btn btn-lg btn-info", @style = "width:100%; height:220px;display: flex;justify-content: center;align-items: center; font-size: 28px;" })
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                @Html.ActionLink("Thống Kê Tồn Kho", "TKTK", new { area = "" }, new { @class = "btn btn-lg btn-info", @style = "width:100%; height:220px;display: flex;justify-content: center;align-items: center; font-size: 28px;" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

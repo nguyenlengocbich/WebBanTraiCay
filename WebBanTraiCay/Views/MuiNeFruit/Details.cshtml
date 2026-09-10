@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.Sp_XemCtdhResult>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="container py-5">
+    <div class="order-detail-container shadow-sm">
+        <div class="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4">
+            <div>
+                <a href="@Url.Action("History")" class="btn btn-link p-0 text-decoration-none mb-2">
+                    <i class="fa fa-chevron-left me-1"></i> Quay lại lịch sử
+                </a>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <h5 class="fw-bold mb-3">Thông tin nhận hàng</h5>
+                <div class="p-3 border rounded">
+                    <p class="mb-2"><span class="info-label">Người nhận:</span>@Model.First().tenkh</p>
+                    <p class="mb-2"><span class="info-label">Số Điện Thoại: @Model.First().sdt</span></p>
+                    <p class="mb-2"><span class="info-label">Ngày đặt hàng: @Model.First().ngayban.ToString("dd/MM/yyyy")</span></p>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="fw-bold mb-3">Danh sách sản phẩm</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+                <tr class="table-primary" style="color:crimson">
+                    <th>
+                        Mã Đơn Hàng
+                    </th>
+                    <th>
+                        Tên Mặt Hàng
+                    </th>
+                    <th>
+                        Số Lượng
+                    </th>
+                    <th>
+                        Giá Bán
+                    </th>
+                    <th>
+                        Thành Tiền
+                    </th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.madh)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.tenmh)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.sl)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.gb)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Thanhtien)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div class="row justify-content-end mt-4">
+            <div class="col-md-5">
+                <div class="total-section">
+                    <div class="d-flex justify-content-between">
+                        <span class="fw-bold fs-5">TỔNG CỘNG:</span>
+                        <span class="fw-bold fs-4 text-danger">@Model.Sum(x => x.sl * x.gb).ToString("#,##0") VNĐ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,204 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.sp_XemMhResult>
+
+@{
+    ViewBag.Title = "Mặt Hàng";
+}
+<style>
+    .filter-section {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        max-width: 2000px;
+        background-color: cornsilk;
+        margin-bottom: 20px;
+    }
+
+        .filter-section h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+
+    .filter-row {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+
+    .filter-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .filter-group label {
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+    .filter-inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 20px;
+        font-family: Arial, sans-serif;
+    }
+</style>
+<h2>Danh Sách Mặt Hàng</h2>
+<div class="filter-section">
+    <h3>Lọc Dữ Liệu</h3>
+    <div class="filter-row">
+        <div class="filter-group">
+            <label>Đơn giá nhỏ nhất:</label>
+            <input id="txtMin" name="txtMin" type="text" oninput="this.value = this.value.replace(/[^\d]/g,'')" />
+        </div>
+        <div class="filter-group">
+            <label>Đơn giá lớn nhất:</label>
+            <input id="txtMax" name="txtMax" type="text" oninput="this.value = this.value.replace(/[^\d]/g,'')" />
+        </div>
+        <div class="filter-group">
+            <label for="selectLoai">Loại mặt hàng:</label>
+            <select id="selectLoai" name="selectLoai" style="text-align:center">
+                <option value="">-- Tất cả --</option>
+                @foreach (var l in ViewBag.loaimh as List<WebBanTraiCay.Models.loaimathang>)
+                {
+                    <option value="@l.maloai">@l.tenloai</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="filter-row">
+        <div class="filter-group">
+            <label>Số lượng thấp nhất:</label>
+            <input id="txtSoluongMin" name="txtSoluongMin" type="text" oninput="this.value = this.value.replace(/[^\d]/g,'')" />
+        </div>
+        <div class="filter-group">
+            <label>Số lượng nhiều nhất:</label>
+            <input id="txtSoluongMax" name="txtSoluongMax" type="text" oninput="this.value = this.value.replace(/[^\d]/g,'')" />
+        </div>
+        <div class="filter-group">
+            <label for="selectTinhTrang">Tình trạng:</label>
+            <select id="selectTinhTrang" name="selectTinhTrang" style="text-align:center">
+                <option value="">-- Tất cả --</option>
+                <option value="Còn hàng">Còn hàng</option>
+                <option value="Hết hàng">Hết hàng</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <div id="search" style="flex: 1;">
+        <label for="textsearch">Tìm kiếm:</label>
+        <input required id="textsearch" name="textsearch" type="text" placeholder="Nhập tên mặt hàng"
+               style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;" />
+    </div>
+    <button onclick="location.href='@Url.Action("Create", "MatHang")'"
+            style="padding: 10px 16px; background-color: #007bff; color: white; border: none;
+                   border-radius: 6px; font-weight: bold; cursor: pointer; white-space: nowrap;">
+        Thêm Mặt Hàng Mới
+    </button>
+</div>
+@if (TempData["Xoa"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["Xoa"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["ThongBao"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+<div id="tableProduct">
+    <table id="myTable" class="display table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+        <thead style="text-align: center; vertical-align: middle; align-items:center ">
+            <tr class="table-primary" style="color:crimson">
+                <th>
+                    Mã Mặt Hàng
+                </th>
+                <th class="col-wrap">
+                    Tên Mặt Hàng
+                </th>
+                <th class="col-wrap">
+                    Loại Mặt Hàng
+                </th>
+                <th class="col-number">
+                    Số Lượng
+                </th>
+                <th class="col-number">
+                    Đơn giá
+                </th>
+                <th>
+                    Đơn Vị Tính
+                </th>
+                <th class="col-image">
+                    Hình Ảnh Mặt Hàng
+                </th>
+                <th>
+                    Tình Trạng
+                </th>
+                <th class="col-actions">
+                    Thao Tác
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            @Html.Action("SearchMH")
+        </tbody>
+    </table>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            function search() {
+            const txtMin = $('#txtMin').val();
+            const txtMax = $('#txtMax').val();
+            const txtSoluongMin = $('#txtSoluongMin').val();
+            const txtSoluongMax = $('#txtSoluongMax').val();
+            const loai = $('#selectLoai').val();
+            const tinhtrang = $('#selectTinhTrang').val();
+            const keyword = $('#textsearch').val();
+            $.ajax({
+                url: '@Url.Action("SearchMH", "MatHang")',
+                type: 'POST',
+                data: {
+                    txtsearch: keyword,
+                    txtMin: txtMin,
+                    txtMax: txtMax,
+                    txtSoluongMin: txtSoluongMin,
+                    txtSoluongMax: txtSoluongMax,
+                    loai: loai,
+                    tinhtrang: tinhtrang
+                },
+                success: function (result) {
+                    $('#tbody').html(result);
+                }
+            });
+        }
+        $('#txtMin').on('input', search);
+        $('#txtMax').on('input', search);
+        $('#txtSoluongMin').on('input', search);
+        $('#txtSoluongMax').on('input', search);
+        $('#selectLoai').on('change', search);
+        $('#selectTinhTrang').on('change', search);
+        $('#textsearch').on('keyup', search);
+        });
+    </script>
+}

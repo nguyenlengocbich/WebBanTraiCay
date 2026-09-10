@@ -1,0 +1,38 @@
+# Visual Studio
+.vs/
+.vscode/
+
+# Build
+bin/
+obj/
+Debug/
+Release/
+
+# User-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+packages/
+
+# Publish
+Publish/
+publish/
+*.publishsettings
+
+# Logs
+*.log
+
+# Database local
+*.mdf
+*.ldf
+
+# Temporary files
+*.tmp
+*.temp
+
+# OS
+.DS_Store
+Thumbs.db

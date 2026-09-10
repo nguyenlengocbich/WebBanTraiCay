@@ -1,0 +1,45 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.Sp_XemDHResult>
+    @if (Model.Count() != 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.madh)
+                </td>
+                <td>
+                    @item.ngayban.ToString("dd/MM/yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tenkh)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem=>item.tennv)
+                </td>
+                <td style="background-color:@(item.trangthai == "Đã thanh toán" ? "#16f162" : (item.trangthai == "Chờ xử lý" ? "#8aa3d6" : (item.trangthai == "Đang giao hàng" ? "#fef206" : "#e81010")))">
+                    @Html.DisplayFor(modelItem => item.trangthai)
+                </td>
+                <td>
+                    @if (item.pttt == "COD")
+                    {
+                        @:Thanh toán khi nhận hàng
+                    }
+                    else
+                    {
+                        @:Thanh toán online (VietQR)
+                    }
+                </td>
+                <td class="col-actions">
+                    @Html.ActionLink("Cập Nhật", "Edit", new { id = item.madh }, new { @class = "btn btn-primary"}) |
+                    @Html.ActionLink("Chi Tiết", "Details", new { id = item.madh }, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.madh }, new { @class = "btn btn-danger btn-delete", data_role = ViewBag.role })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="7">Không có dữ liệu</td>
+        </tr>
+    }

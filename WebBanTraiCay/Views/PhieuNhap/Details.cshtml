@@ -1,0 +1,65 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.Sp_XemCtpnResult>
+
+@{
+    ViewBag.Title = "Chi Tiết Phiếu Nhập";
+}
+
+<h2>Chi Tiết Phiếu Nhập</h2>
+<table class="table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+    <tr class="table-primary" style="color:crimson">
+        <th>
+            Mã Phiếu Nhập
+        </th>
+        <th>
+            Ngày Nhập
+        </th>
+        <th>
+            Tên Nhà Cung Cấp
+        </th>
+        <th>
+            Điện Thoại
+        </th>
+        <th>
+            Tên Mặt Hàng
+        </th>
+        <th>
+            Số Lượng
+        </th>
+        <th>
+            Đơn Giá
+        </th>
+        <th>
+            Thành Tiền
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.mapn)
+        </td>
+        <td>
+            @item.ngaynhap.ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tenncc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dienthoai)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tenmh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sln)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dgn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Thanhtien)
+        </td>
+    </tr>
+}
+
+</table>

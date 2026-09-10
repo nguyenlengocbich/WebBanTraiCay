@@ -1,0 +1,99 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.donhang>
+
+@{
+    ViewBag.Title = "History";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+
+<div class="container py-5">
+    @if (Model.Count() == 0)
+    {
+        <div class="text-center py-5">
+            <i class="fa fa-shopping-basket fa-3x text-light mb-3"></i>
+            <p class="mt-3 text-muted">Bạn chưa có đơn hàng nào.</p>
+            <a href="@Url.Action("Shop", "MuiNeFruit")" class="btn btn-primary mt-2">Mua sắm ngay</a>
+        </div>
+    }
+    else
+    {
+        int stt = 1;
+        <div class="container py-5">
+            <div class="mb-4">
+                <h3 class="fw-bold text-dark"><i class="fa fa-list-ol me-2 text-primary"></i>Lịch sử đơn hàng</h3>
+                <p class="text-muted">Quản lý và theo dõi trạng thái các đơn hàng bạn đã đặt</p>
+            </div>
+            <div class="table-container shadow-sm p-3 mb-5 bg-white rounded">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="text-center" style="width: 50px;">STT</th>
+                                <th>Mã đơn</th>
+                                <th>Ngày đặt</th>
+                                <th>Tổng sản phẩm</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th class="text-center">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                int tongsp = (ViewBag.ctdh as List<WebBanTraiCay.Models.ctdh>).Where(x=>x.madh==item.madh).Sum(x => x.sl);
+                                int tongtien = (ViewBag.ctdh as List<WebBanTraiCay.Models.ctdh>).Where(x => x.madh == item.madh).Sum(x => x.sl * x.gb);
+                                <tr>
+                                    <td class="text-center fw-bold">@stt</td>
+                                    <td class="fw-bold text-primary">@item.madh</td>
+                                    <td>@item.ngayban.ToString("dd/MM/yyyy")</td>
+                                    <td class="align-items-center">
+                                        @tongsp
+                                    </td>
+                                    <td class="text-danger fw-bold">
+                                        @tongtien.ToString("#,##0") VNĐ
+                                    </td>
+                                    <td style="background-color:@(item.trangthai == "Đã thanh toán" ? "#16f162" : (item.trangthai == "Chờ xử lý" ? "#8aa3d6" : (item.trangthai == "Đang giao hàng" ? "#fef206" : "#e81010")));color:black">
+                                        @item.trangthai
+                                    </td>
+                                    <td style="text-align:center">
+                                        @Html.ActionLink("Chi Tiết", "Details","", new { id = item.madh }, new { @class = "btn btn-sm btn-info" })
+                                        @if (item.trangthai == "Chờ xử lý")
+                                        {
+                                           <button onclick="HuyDonHang('@item.madh')" class="btn btn-sm btn-danger ms-1">
+                                               <i class="fa fa-trash"></i> Hủy Đơn
+                                           </button>
+                                        }
+                                    </td>
+                                </tr>
+                                stt++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts {
+    <script>
+            function HuyDonHang(id) {
+                Swal.fire('Xác nhận hủy?',"Bạn có chắc chắn muốn hủy đơn hàng " + id + " không?",'warning',true,'#dc3545','#6c757d', 'Đồng ý hủy','Quay lại').then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '@Url.Action("HuyDon", "DonHang")',
+                            type: 'POST',
+                            data: { madh: id },
+                            success: function (res) {
+                                if (res.success) {
+                                    Swal.fire('Thành công!', res.message, 'success').then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire('Lỗi!', res.message, 'error');
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+    </script>
+}

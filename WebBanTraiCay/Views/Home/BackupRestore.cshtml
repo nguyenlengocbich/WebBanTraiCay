@@ -1,0 +1,124 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.BackupFile>
+@{
+    ViewBag.Title = "BackupRestore";
+}
+<style>
+    .form-group {
+        padding-left: 5%;
+        padding-right: 5%;
+        align-items: center;
+    }
+
+    .btn-group-action {
+        min-width: 120px;
+    }
+</style>
+<h2>Sao lưu và Phục hồi Database</h2>
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3><i class="fa fa-hdd-o"></i> Danh sách bản sao lưu</h3>
+        </div>
+        <div class="col-md-6" style="text-align:right">
+            @using (Html.BeginForm("BackupDatabase", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa fa-plus"></i> Tạo bản Backup mới
+                </button>
+            }
+        </div>
+    </div>
+    <hr />
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Thành công!</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Lỗi!</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    }
+    <table class="table table-bordered table-hover" style="text-align:center;font-family:Arial, sans-serif">
+        <thead>
+            <tr>
+                <th style="width: 50px;">STT</th>
+                <th>Tên tập tin</th>
+                <th>Ngày tạo</th>
+                <th>Kích thước</th>
+                <th class="btn-group-action">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.STT</td>
+                        <td>@item.FileName</td>
+                        <td>@item.CreationTime.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <td>@((item.SizeKB / 1024.0).ToString("N2")) MB</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="@Url.Action("DownloadBackup", "Home", new { fileName = item.FileName })" class="btn btn-sm btn-success" title="Tải xuống">
+                                    <i class="fa fa-download"></i> Tải xuống
+                                </a>
+                                <a href="#" class="btn btn-sm btn-warning" onclick="confirmRestore('@item.FileName')" title="Phục hồi (Restore)">
+                                    <i class="fa fa-history"></i> Phục hồi
+                                </a>
+                                <a href="#" class="btn btn-sm btn-danger" onclick="confirmDelete('@item.FileName')" title="Xóa">
+                                    <i class="fa fa-trash"></i> Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">Chưa có bản backup nào được tạo.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @using (Html.BeginForm("RestoreDatabase", "Home", FormMethod.Post, new { id = "restoreForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="fileName" id="restoreFileName" />
+    }
+
+    @using (Html.BeginForm("DeleteBackup", "Home", FormMethod.Post, new { id = "deleteForm" }))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="fileName" id="deleteFileName" />
+    }
+</div>
+@section Scripts{
+    <script>
+        function confirmRestore(fileName) {
+            if (confirm("CẢNH BÁO: Bạn có chắc chắn muốn phục hồi database từ file " + fileName + "? Thao tác này sẽ GHI ĐÈ dữ liệu hiện tại."))
+            {
+                document.getElementById('restoreFileName').value = fileName;
+                document.getElementById('restoreForm').submit();
+            }
+        }
+        function confirmDelete(fileName) {
+            if (confirm("Bạn có chắc chắn muốn xóa vĩnh viễn file backup " + fileName + "?"))
+            {
+                document.getElementById('deleteFileName').value = fileName;
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
+}
+
+

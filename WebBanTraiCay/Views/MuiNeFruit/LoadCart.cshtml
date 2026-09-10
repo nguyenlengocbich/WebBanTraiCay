@@ -1,0 +1,61 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.giohang>
+<a href="#" class="nav-link dropdown-toggle d-flex align-items-center cart-item icon-cart" data-notify="@(Model == null ? 0 : Model.Sum(x=>x.soluong))" id="CartDropdown" role="button" data-bs-popper="none" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="rounded-circle btn-md-square border"><i class="fa fa-shopping-cart"></i></span>
+</a>
+<div class="dropdown-menu cart-menu @(User.Identity.IsAuthenticated ? "auth-style" : "unauth-style")" aria-labelledby="CartDropdown">
+    <div class="px-3 py-2">
+        <p style="font-size: 17px; text-align: center; margin-bottom: 0px; color:coral">GIỎ HÀNG</p>
+    </div>
+    <div id="inner-cart-items">
+        <div id="cart-items-list" class="px-3" style="max-height: 400px; overflow-y: auto;">
+            @if (Model != null && Model.Any())
+            {
+                int tongtien = 0;
+                foreach (var item in Model)
+                {
+                    WebBanTraiCay.Models.mathang a = (ViewBag.mathang as List<WebBanTraiCay.Models.mathang>).FirstOrDefault(x => x.mamh == item.mamh);
+                    tongtien += a.giaban * item.soluong;
+                    <div class="cart-item-row d-flex align-items-center mb-3 pb-3 border-bottom position-relative">
+                        <div class="cart-img-wrapper">
+                            <img src="~/Hinh/@Url.Content(a.hinhanhmh)" class="rounded shadow-sm" style="width: 65px; height: 65px; object-fit: cover;">
+                        </div>
+                        <div class="ms-3 flex-grow-1">
+                            <h6 class="mb-1 fw-bold text-dark" style="font-size: 14px; line-height: 1.4;">@a.tenmh (@a.dvtinh)</h6>
+                            <div class="d-flex align-items-center justify-content-between mt-2">
+                                <div class="quantity-control d-flex align-items-center border rounded-pill bg-light">
+                                    <button class="btn btn-xs p-0 px-2" onclick="updatesl('@item.mamh', -1)">-</button>
+                                    <span class="mx-2 fw-bold" style="font-size: 13px;">@item.soluong</span>
+                                    <button class="btn btn-xs p-0 px-2" onclick="updatesl('@item.mamh', 1)">+</button>
+                                </div>
+                                <span class="fw-bold text-secondary" style="font-size: 14px;">@a.giaban.ToString("#,##0") VNĐ</span>
+                            </div>
+                        </div>
+                        <button class="btn-remove-item ms-2" onclick="remove('@item.mamh')" title="Xóa">
+                            <i class="fa fa-times text-muted"></i>
+                        </button>
+                    </div>
+                }
+                <div class="cart-summary pt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted small fw-bold text-uppercase">Tổng cộng:</span>
+                        <span class="text-danger fw-bold fs-5">@tongtien.ToString("#,##0") VNĐ</span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-4">
+                    <i class="fa fa-shopping-basket fa-3x text-light mb-3"></i>
+                    <p class="text-muted">Giỏ hàng của bạn đang trống</p>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="d-flex justify-content-center pb-3">
+        <a class="btn btn-danger w-50 py-2 fw-bold text-uppercase rounded-pill shadow-sm"
+           href="@Url.Action("Cart", "MuiNeFruit")"
+           style="font-size: 13px; letter-spacing: 0.5px;">
+            Xem giỏ hàng
+        </a>
+    </div>
+</div>

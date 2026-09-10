@@ -1,0 +1,39 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.nhanvien>
+    @if (Model.Count() != 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.manv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tennv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.diachi)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sdtnv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.luongcb)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.hesoluong)
+                </td>
+                <td>
+                    @Html.ActionLink("Cập Nhật", "Edit", new { id = item.manv }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Chi Tiết", "Details", new { id = item.manv }, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.manv }, new { @class = "btn btn-danger btn-delete", data_role = ViewBag.role })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="7">Không có dữ liệu</td>
+        </tr>
+    }
+

@@ -1,0 +1,70 @@
+﻿@model WebBanTraiCay.Models.mathang
+
+@{
+    ViewBag.Title = "MatHangDetail";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Chi Tiết Mặt Hàng</h1>
+    <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Home</a></li>
+        <li class="breadcrumb-item active text-white">Chi Tiết Mặt Hàng</li>
+    </ol>
+</div>
+<div class="container-fluid shop py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-lg-12 col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="row g-4 single-product">
+                    <div class="col-xl-4 mb-4">
+                        <div>
+                            <div class="single-item">
+                                <div class="single-inner bg-light rounded">
+                                    <img src="~/Hinh/@Url.Content(Model.hinhanhmh)" class="img-fluid rounded" style="height:100%" alt="Image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8">
+                        <h4 class="fw-bold mb-3">@Model.tenmh</h4>
+                        <p class="mb-3">Loại mặt hàng: @ViewBag.loai</p>
+                        <h5 class="fw-bold mb-3">@Model.giaban.ToString("#,##0") VNĐ</h5>
+                        <div class="d-flex flex-column mb-3">
+                            <small>Đơn vị tính: @Model.dvtinh</small>
+                            <small>Số lượng hiện có: <strong class="text-primary">@Model.soluong mặt hàng</strong></small>
+                        </div>
+                        <p class="mb-4">
+                            @Model.mota
+                        </p>
+                        <div class="input-group quantity mb-4" style="width: 100px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            <input type="text" id="quantity-input-@Model.mamh" class="form-control form-control-sm text-center border-0 txt-quantity" min="1" value="1">
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        @if (Model.soluong > 0)
+                        {
+                            <a href="#" class="btn btn-primary border-secondary rounded-pill px-4 py-2 mb-4 text-primary js-addcart" data-id="@Model.mamh" data-name="@Model.tenmh">
+                                <i class="fa fa-shopping-bag me-2 text-white"></i> Thêm vào giỏ hàng
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0)" class="btn btn-secondary rounded-pill py-2 px-4 w-100 disabled">
+                                Hết hàng
+                            </a>
+                        }
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Action("MatHangRelated",new {id = Model.maloai})

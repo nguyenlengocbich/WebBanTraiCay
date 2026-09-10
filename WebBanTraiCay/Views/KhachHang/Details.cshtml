@@ -1,0 +1,53 @@
+﻿@model WebBanTraiCay.Models.khachhang
+
+@{
+    ViewBag.Title = "Chi Tiết";
+}
+<style>
+    .dl-horizontal dt {
+        float: left;
+        width: 160px;
+        font-weight: bold;
+    }
+
+    .dl-horizontal dd {
+        margin-left: 180px;
+        margin-bottom: 10px;
+    }
+</style>
+<h2>Thông Tin Khách Hàng</h2>
+
+<div class="row" style="font-family:Arial, sans-serif;font-size:20px;align-items:center">
+    <h4>Khách Hàng</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Tên Khách Hàng
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.tenkh)
+        </dd>
+
+        <dt>
+            Số Điện Thoại
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sdt)
+        </dd>
+
+        <dt>
+            Địa Chỉ
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.diachi)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Chỉnh Sửa", "Edit", new { id = Model.makh }) |
+    @Html.ActionLink("Quay Lại", "Index")
+</p>

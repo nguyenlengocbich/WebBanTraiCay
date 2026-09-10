@@ -1,0 +1,74 @@
+﻿@model  IEnumerable<WebBanTraiCay.Models.loaimathang>
+
+@{
+    ViewBag.Title = "Loại Mặt Hàng";
+}
+<h2>Danh sách loại sản phẩm</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <div id="search" style="flex: 1;">
+        <label for="textsearch">Tìm kiếm:</label>
+        <input required id="textsearch" name="textsearch" type="text" placeholder="Nhập tên loại mặt hàng"
+               style="width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;" />
+    </div>
+
+    <button onclick="location.href='@Url.Action("Create", "LoaiMatHang")'"
+            style="padding: 10px 16px; background-color: #007bff; color: white; border: none;
+                   border-radius: 6px; font-weight: bold; cursor: pointer; white-space: nowrap;">
+        Thêm Loại Mặt Hàng Mới
+    </button>
+</div>
+@if (TempData["Xoa"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["Xoa"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["ThongBao"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+<div id="lmhtable">
+    <table id="myTable" class="display table table-bordered table-striped" style="text-align:center;font-family:Arial, sans-serif">
+        <thead>
+            <tr class="table-primary" style="color:crimson">
+                <th>
+                    Mã Loại
+                </th>
+                <th>
+                    Tên Loại
+                </th>
+                <th class="col-actions">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            @Html.Action("SearchLMH")
+        </tbody>
+    </table>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            function search() {
+            const keyword = $('#textsearch').val();
+            $.ajax({
+                url: '@Url.Action("SearchLMH", "LoaiMatHang")',
+                type: 'POST',
+                data: {
+                    txtsearch: keyword,
+                },
+                success: function (result) {
+                    $('#tbody').html(result);
+                }
+            });
+        }
+            $('#textsearch').on('keyup', search);
+            search();
+        });
+    </script>
+}

@@ -1,0 +1,76 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.sp_XemMhResult>
+
+@{
+    ViewBag.Title = "Danh Sách Mặt Hàng";
+}
+
+<h2>Danh Sách Mặt Hàng</h2>
+<table class="table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+    <tr class="table-primary" style="color:crimson">
+        <th>
+            Mã Mặt Hàng
+        </th>
+        <th>
+            Tên Mặt Hàng
+        </th>
+        <th>
+            Loại Mặt Hàng
+        </th>
+        <th>
+            Số Lượng
+        </th>
+        <th>
+            Đơn giá
+        </th>
+        <th>
+            Đơn Vị Tính
+        </th>
+        <th>
+            Hình Ảnh Mặt Hàng
+        </th>
+        <th>
+            Tình Trạng
+        </th>
+        <th>
+            Thao Tác
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.mamh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tenmh)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tenloai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.soluong)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.giaban)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.dvtinh)
+            </td>
+            <td>
+                <img src="~/Hinh/@Url.Content(item.hinhanhmh)" alt="image" style="width:100px;height:100px" />
+            </td>
+            <td style="background-color:@(item.tinhtrang == "Còn hàng" ? "#00ff0096" : "#fb0000f2")">
+                @Html.DisplayFor(modelItem => item.tinhtrang)
+            </td>
+            <td>
+                @Html.ActionLink("Cập Nhật", "Edit","MatHang", new { id = item.mamh }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Chi Tiết", "Details", "MatHang", new { id = item.mamh }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Xóa", "Delete", "MatHang", new { id = item.mamh },new { @class = "btn btn-danger btn-delete", data_role = ViewBag.role })
+            </td>
+        </tr>
+    }
+</table>
+<div>
+    @Html.ActionLink("Quay lại", "Index")
+</div>

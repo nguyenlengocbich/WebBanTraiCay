@@ -1,0 +1,67 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.Sp_XemCtdhResult>
+
+@{
+    ViewBag.Title = "Chi Tiết Đơn Hàng";
+}
+
+<h2>Chi Tiết Đơn Hàng</h2>
+<table class="table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+    <tr class="table-primary" style="color:crimson">
+        <th>
+            Mã Đơn Hàng
+        </th>
+        <th>
+            Ngày Bán
+        </th>
+        <th>
+            Tên Khách Hàng
+        </th>
+        <th>
+            Số Điện Thoại
+        </th>
+        <th>
+            Tên Mặt Hàng
+        </th>
+        <th>
+            Số Lượng
+        </th>
+        <th>
+            Giá Bán
+        </th>
+        <th>
+            Thành Tiền
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.madh)
+        </td>
+        <td>
+            @item.ngayban.ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tenkh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sdt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tenmh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.gb)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Thanhtien)
+        </td>
+    </tr>
+}
+</table>
+<div>
+    @Html.ActionLink("Quay Lại", "Index")
+</div>

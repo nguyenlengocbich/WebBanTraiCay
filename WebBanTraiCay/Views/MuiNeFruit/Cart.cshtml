@@ -1,0 +1,83 @@
+﻿@model WebBanTraiCay.Models.khachhang
+
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Giỏ Hàng</h1>
+    <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Home</a></li>
+        <li class="breadcrumb-item active text-white">Giỏ Hàng</li>
+    </ol>
+</div>
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-9">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tên Mặt Hàng</th>
+                                <th scope="col">Hình Ảnh</th>
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Đơn Giá</th>
+                                <th scope="col">Thành Tiền</th>
+                                <th scope="col">Thao Tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodycart">
+                            @Html.Action("LoadCartPage")
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-3">
+                <div class="bg-light rounded">
+                    <div class="p-4">
+                        <h1 class="display-6 mb-4">Thông Tin Đơn Hàng</h1>
+                        <div class="d-flex justify-content-between mb-4">
+                            <h5 class="mb-0 me-4">Khách Hàng:</h5>
+                            <p class="mb-0">@Model.tenkh</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h5 class="mb-0 me-4">Địa chỉ giao hàng:</h5>
+                        </div>
+                        <p class="mb-0 text-end">@Model.diachi</p>
+                    </div>
+                    <h5 class="fw-bold mb-3" style="margin-left:15px">Hình thức thanh toán</h5>
+                    @using (Html.BeginForm("DatHang", "MuiNeFruit", FormMethod.Post, new { id = "formDatHang" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input name="makh" type="hidden" value="@Model.makh" />
+                        <div class="form-check mb-2" style="margin-left:15px">
+                            <input class="form-check-input" type="radio" name="pttt" id="pt_cod" value="COD" checked>
+                            <label class="form-check-label" for="pt_cod">Thanh toán COD</label>
+                        </div>
+                        <div class="form-check mb-4" style="margin-left:15px">
+                            <input class="form-check-input" type="radio" name="pttt" id="pt_qr" value="VietQR">
+                            <label class="form-check-label" for="pt_qr">Chuyển khoản VietQR</label>
+                        </div>
+                        <div style="margin-left:15px" class="py-3 border-top border-bottom d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Tổng cộng</h5>
+                            <h4 class="mb-0 text-danger fw-bold" id="thanhtien">0 VNĐ</h4>
+                        </div>
+                        <button class="btn btn-primary w-100 rounded-pill py-3 text-uppercase fw-bold shadow-sm" type="submit">
+                            Xác nhận đặt hàng
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+@if (TempData["ThongBao"] != null)
+{
+    <script>
+            Swal.fire('@TempData["ThongBao"]','Cảm ơn bạn đã lựa chọn đặt hàng ở chỗ chúng tôi, nhân viên chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất','success','Đồng ý');
+    </script>
+}
+}
+

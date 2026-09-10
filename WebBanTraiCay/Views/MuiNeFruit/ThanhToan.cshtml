@@ -1,0 +1,125 @@
+﻿@model WebBanTraiCay.Models.donhang
+@{
+    ViewBag.Title = "Thanh Toán Đơn Hàng";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+    string maNganHang = "970405";
+    string tenNganHang = "Agribank";
+    string soTaiKhoan = "4811215040041";
+    string tenChuTaiKhoan = "NGUYEN THAI UY";
+}
+
+<div class="container py-5 mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div class="card-body p-4 p-md-5 bg-white">
+
+                    <div class="d-flex align-items-center mb-4">
+                        <a href="javascript:void(0)" onclick="cancelManual()" class="text-dark text-decoration-none me-3">
+                            <i class="fa fa-arrow-left fa-lg"></i>
+                        </a>
+                        <h4 class="fw-bold mb-0 text-uppercase">Thông Tin Chuyển Khoản Ngân Hàng</h4>
+                    </div>
+                    <div class="text-center mb-4">
+                        <p class="mb-1 fw-bold">Quét mã QR để chuyển khoản</p>
+                        <p class="text-danger small px-3">Lưu ý: Đừng dùng Zalo Pay hoặc Viettel Money nạp tiền, hệ thống sẽ không cộng được tiền tự động.</p>
+
+                        <div class="qr-container p-3 d-inline-block border rounded-4 bg-white shadow-sm mt-2">
+                            <img src="https://img.vietqr.io/image/@(maNganHang)-@(soTaiKhoan)-compact2.png?amount=@ViewBag.TongTien&addInfo=@Model.madh&accountName=@tenChuTaiKhoan" alt="VietQR" class="img-fluid" style="max-width: 250px;" />
+                        </div>
+                    </div>
+                    <div class="info-box border rounded-3 p-3 mb-4 text-start bg-light shadow-sm">
+                        <h6 class="fw-bold mb-3 border-bottom pb-2 text-primary">Thông tin tài khoản:</h6>
+                        <div class="mb-2 d-flex justify-content-between">
+                            <span class="text-muted">Ngân hàng:</span>
+                            <span class="fw-bold text-dark text-end">@tenNganHang</span>
+                        </div>
+                        <div class="mb-2 d-flex justify-content-between">
+                            <span class="text-muted">Chủ tài khoản:</span>
+                            <span class="fw-bold text-dark text-end text-uppercase">@tenChuTaiKhoan</span>
+                        </div>
+                        <div class="mb-0 d-flex justify-content-between align-items-center">
+                            <span class="text-muted">Số tài khoản:</span>
+                            <span class="fw-bold fs-5 text-primary">@soTaiKhoan</span>
+                        </div>
+                    </div>
+
+                    <div class="content-box p-3 rounded-3 text-center mb-4" style="background-color: #fffdf0; border: 1px solid #ffeeba;">
+                        <h6 class="fw-bold text-muted small mb-2 text-uppercase">Nội dung chuyển khoản:</h6>
+                        <div class="py-2 px-4 d-inline-block bg-white border border-warning rounded">
+                            <h4 class="text-danger fw-bold mb-0">@Model.madh</h4>
+                        </div>
+                        <p class="mb-0 mt-3 small text-muted italic" style="font-size: 11px;">
+                            Lưu ý: Vui lòng nhập chính xác nội dung chuyển khoản trên để giao dịch được xử lý tự động và nhanh chóng.
+                        </p>
+                    </div>
+                    @using (Html.BeginForm("HoanTatOnline", "MuiNeFruit", FormMethod.Post, new { id = "formthanhtoan" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="madh" value="@Model.madh" />
+                        <div class="alert alert-danger py-2 small mb-3 text-center">
+                            <i class="fa fa-exclamation-triangle me-2"></i> Không thoát trang hoặc nhấn Back. Nếu thoát, đơn hàng sẽ bị <strong>HỦY</strong>.
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold text-uppercase shadow-sm" onclick="isConfirmed = true;">
+                            Tôi đã chuyển khoản xong
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        var isConfirmed = false;
+        var maDH = "@Model.madh";
+        window.addEventListener('beforeunload', function (e) {
+            if (!isConfirmed) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+        window.addEventListener('unload', function () {
+            if (!isConfirmed) {
+                var data = new FormData();
+                data.append('madh', maDH);
+                navigator.sendBeacon('@Url.Action("XoaDonHangRac", "MuiNeFruit")', data);
+            }
+        });
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted || (typeof window.performance != "undefined" && window.performance.navigation.type === 2)) {
+                window.location.reload();
+            }
+        });
+        function cancelManual() {
+            if (confirm("Hủy giao dịch này?")) {
+                isConfirmed = true;
+                    $.ajax({
+                    url: '@Url.Action("XoaDonHangRac", "MuiNeFruit")',
+                    type: 'POST',
+                    data: {
+                        madh: maDH
+                    },
+                    success: function (response) {
+                        if(response.success==true) {
+                           window.location.href = "@Url.Action("Cart")";
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Lỗi khi xóa đơn hàng rác:", error);
+                        window.location.href = "@Url.Action("Cart")";
+                    }
+                });
+            }
+            return false;
+        }
+        $(document).ready(function () {
+            $('#formConfirm').submit(function () {
+                isConfirmed = true;
+                var btn = $(this).find('button[type="submit"]');
+                btn.prop('disabled', true);
+                btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Đang xử lý...');
+            });
+        })
+    </script>
+}

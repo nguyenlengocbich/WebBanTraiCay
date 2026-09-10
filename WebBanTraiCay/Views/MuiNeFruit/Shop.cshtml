@@ -1,0 +1,143 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.mathang>
+
+@{
+    ViewBag.Title = "Shop";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Cửa Hàng</h1>
+    <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index")">Trang Chủ</a></li>
+        <li class="breadcrumb-item active text-white">Cửa Hàng</li>
+    </ol>
+</div>
+@Html.Action("Service")
+<div class="container-fluid shop py-5">
+    <div class="container py-5">
+        <div class="row g-4" id="paginationscroll">
+            <div class="col-lg-3" id="side-filter">
+                <div class="additional-product mb-4">
+                    <h4>Danh mục loại mặt hàng</h4>
+                    <div class="additional-product-item">
+                        <input type="radio" class="me-2 filter-input" id="all-cat" name="maloai" value="" checked>
+                        <label for="all-cat" class="text-dark">Tất cả</label>
+                    </div>
+                    @foreach (var lmh in ViewBag.loai as List<WebBanTraiCay.Models.loaimathang>)
+                    {
+                        <div class="additional-product-item">
+                            <input type="radio" class="me-2 filter-input" id="cat-@lmh.maloai" name="maloai" value="@lmh.maloai">
+                            <label for="cat-@lmh.maloai" class="text-dark"> @lmh.tenloai</label>
+                        </div>
+                    }
+                </div>
+                <div class="price mb-4">
+                    <h4 class="mb-2">Đơn giá lớn nhất: <span id="current-price"></span>VNĐ</h4>
+                    <input type="range" class="form-range w-100 filter-input" id="rangeInput" min="0" max="500000" step="10000" value="500000">
+                    <div class="d-flex justify-content-between small">
+                        <span>0 VNĐ</span>
+                        <span>500.000 VNĐ</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-6">
+                        <div class="input-group">
+                            <input type="search" typeof="text" id="searchKeyword" class="form-control p-3" value="@(ViewBag.Search==null?null:ViewBag.Search)" placeholder="Tìm tên sản phẩm...">
+                            <button class="btn btn-primary" id="btnSearch"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-end">
+                        <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between align-items-center">
+                            <label class="mb-0">Sắp xếp:</label>
+                            <select id="sortOrder" class="border-0 bg-light me-3 filter-input">
+                                <option value="All">Mặc định</option>
+                                <option value="New">Sản phẩm mới</option>
+                                <option value="PriceAsc">Giá thấp đến cao</option>
+                                <option value="PriceDesc">Giá cao xuống thấp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-xl-2">
+                        <ul class="nav nav-pills d-inline-flex text-center py-2 px-2 rounded bg-light mb-4">
+                            <li class="nav-item me-4">
+                                <a class="bg-light" data-bs-toggle="pill" href="#tab-5">
+                                    <i class="fa fa-th fa-3x text-primary"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="bg-light" data-bs-toggle="pill" href="#tab-6">
+                                    <i class="fa fa-bars fa-3x text-primary"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="product-list-container">
+                    @Html.Action("FilterShop")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var search = $('#searchKeyword').val().trim();
+            $('.nav-pills a[href="#tab-5"]').addClass('active');
+            $('#tab-5').addClass('show active');
+            if (search !== "") {
+                loadFilteredProducts(1);
+            }
+            function loadFilteredProducts(page) {
+                var currentTabId = $('.nav-pills a.active').attr('href');
+                var filterData = {
+                    page: page || 1,
+                    maloai: $('input[name="maloai"]:checked').val(),
+                    maxPrice: $('#rangeInput').val(),
+                    search: $('#searchKeyword').val(),
+                    sort: $('#sortOrder').val()
+                };
+                $.ajax({
+                    url: '@Url.Action("FilterShop", "MuiNeFruit")',
+                    type: 'POST',
+                    data: filterData,
+                    success: function (result) {
+                        $('#product-list-container').html(result);
+                        $('#product-list-container .tab-pane').removeClass('show active');
+                        $(currentTabId).addClass('show active');
+                        if (typeof WOW !== 'undefined') {
+                            new WOW().init();
+                        }
+                    }
+                });
+            }
+            $('.nav-pills a').on('click', function (e) {
+                e.preventDefault();
+                $('.nav-pills a').removeClass('active');
+                $(this).addClass('active');
+                var target = $(this).attr('href');
+                $('.tab-pane').removeClass('show active');
+                $(target).addClass('show active');
+            });
+            $(document).on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                var pageNum = $(this).data('page');
+                if (pageNum) loadFilteredProducts(pageNum);
+                document.getElementById('paginationscroll').scrollIntoView({ behavior: 'smooth' });
+            });
+            $('.filter-input').on('change', function() {
+                if($(this).attr('id') === 'rangeInput') {
+                    $('#current-price').text(parseInt($(this).val()).toLocaleString());
+                }
+                loadFilteredProducts(1);
+            });
+            $('#btnSearch').click(function() {
+                loadFilteredProducts(1);
+            });
+            $('#searchKeyword').on('input',function () {
+                loadFilteredProducts(1);
+            });
+        });
+    </script>
+}

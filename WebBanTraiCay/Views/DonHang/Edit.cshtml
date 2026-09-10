@@ -1,0 +1,211 @@
+﻿@model WebBanTraiCay.Models.donhang
+@{
+    ViewBag.Title = "Chỉnh Sửa Đơn Hàng";
+}
+<style>
+    .form-group {
+        padding-left: 20%;
+        padding-right: 20%;
+        align-items: center;
+    }
+
+    .form-horizontal {
+        font-size: 20px;
+    }
+
+        .form-horizontal .col-md-9 .form-control {
+            width: 80% !important;
+            box-sizing: border-box;
+            max-width: 80% !important;
+        }
+
+    .custom-row {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+    }
+
+        .custom-row .form-control {
+            min-width: 120px;
+        }
+        .custom-row {
+            padding-left: 15%;
+            padding-right: 15%;
+            align-items: center;
+        }
+        .custom-row select {
+            width: 250px;
+        }
+
+        .custom-row label {
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+</style>
+<h2>Chỉnh Sửa Đơn Hàng</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="background-color:cornsilk">
+        <h4 style="text-align:center;padding-top:10px">Thông tin đơn hàng</h4>
+        <hr />
+
+        <div class="form-group row mb-3">
+            <label class="control-label col-md-3">Khách hàng</label>
+            <div class="col-md-9">
+                <input style="font-size:20px" type="text" name="makh" value="@ViewBag.kh" readonly class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group row mb-3">
+            <label class="control-label col-md-3">Ngày lập đơn hàng</label>
+            <div class="col-md-9">
+                <input style="font-size:20px" readonly type="date" name="ngayban" class="form-control" value="@Model.ngayban.ToString("yyyy-MM-dd")" />
+            </div>
+        </div>
+
+        <div class="form-group row mb-3">
+            <label class="control-label col-md-3">Nhân viên lập đơn</label>
+            <div class="col-md-9">
+                <input style="font-size:20px" type="text" name="manv" value="@ViewBag.nv" readonly class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group row mb-3">
+            <label class="control-label col-md-3">Trạng thái</label>
+            <div class="col-md-9">
+                @Html.DropDownListFor(m => m.trangthai, (SelectList)ViewBag.tinhtrang, new { @class = "form-control", style = "font-size:20px"})
+            </div>
+        </div>
+        <hr />
+        <h4 style="text-align:center;padding-top:10px">Chi tiết mặt hàng</h4>
+
+        <div class="form-inline custom-row">
+            <label class="control-label">Mặt Hàng</label>
+            <select id="mamh" class="form-control">
+                @foreach (var sp in ViewBag.mathang as List<WebBanTraiCay.Models.mathang>)
+                {
+                    <option value="@sp.mamh" data-gia="@sp.giaban">@sp.tenmh</option>
+                }
+            </select>
+            <label class="control-label">Số Lượng</label>
+            <input type="number" id="soluong" style="max-width:280px" class="form-control" placeholder="Số lượng"/>
+            <button type="button" id="btnAdd" @(ViewBag.check != null?"disabled":"") class="btn btn-success">Thêm mặt hàng</button>
+        </div>
+        <br />
+        <table style="text-align:center" class="table table-bordered" id="tblChiTiet">
+            <thead >
+                <tr>
+                    <th>Mặt hàng</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.ctdh != null)
+                {
+                    foreach (var ct in ViewBag.ctdh as List<WebBanTraiCay.Models.Sp_XemCtdhResult>)
+                    {
+                        var mh = (ViewBag.mathang as List<WebBanTraiCay.Models.mathang>).FirstOrDefault(x => x.tenmh == ct.tenmh);
+                        <tr id="row_@mh.mamh">
+                            <td>@ct.tenmh</td>
+                            <td>@ct.sl</td>
+                            <td>@ct.gb.ToString()</td>
+                            <td>@ct.Thanhtien</td>
+                            <td>
+                                <button @(ViewBag.check != null?"disabled":"") type="button" class="btn btn-danger btn-sm" onclick="xoa('@mh.mamh')">Xóa</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <div id="hidden">
+            @if (ViewBag.ctdh != null)
+            {
+                foreach (var ct in ViewBag.ctdh as List<WebBanTraiCay.Models.Sp_XemCtdhResult>)
+                {
+                    var mh = (ViewBag.mathang as List<WebBanTraiCay.Models.mathang>).FirstOrDefault(x => x.tenmh == ct.tenmh);
+                    <input type="hidden" name="mamh" value="@mh.mamh" id="mamh_@mh.mamh" />
+                    <input type="hidden" name="soluong" value="@ct.sl" id="soluong_@mh.mamh" />
+                }
+            }
+        </div>
+        <div class="form-group row mb-3" style="align-items:center;padding-bottom:20px">
+            <div class="col-md-5"></div>
+            <div class="col-md-offset-2 col-md-7">
+                <input style="font-size:20px" type="submit" value="Lưu thay đổi" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+<div>
+    @Html.ActionLink("Quay lại danh sách", "Index")
+</div>
+@section scripts {
+    <script>
+        document.getElementById("btnAdd").addEventListener("click", function () {
+            const select = document.getElementById("mamh");
+            const mamh = select.value;
+            const tenmh = select.options[select.selectedIndex].text;
+            const dongia = parseFloat(select.options[select.selectedIndex].getAttribute("data-gia"));
+            const soluong = parseInt(document.getElementById("soluong").value);
+            if (!mamh || isNaN(soluong) || soluong <= 0) {
+                alert("Vui lòng chọn sản phẩm và nhập số lượng hợp lệ!");
+                return;
+            }
+            if (document.getElementById("row_" + mamh)) {
+                alert("Mặt hàng này đã được thêm vào danh sách!");
+                return;
+            }
+            const thanhtien = dongia * soluong;
+            const row = `
+                    <tr id="row_${mamh}">
+                        <td>${tenmh}</td>
+                        <td>${soluong}</td>
+                        <td>${dongia.toString()}</td>
+                        <td>${thanhtien.toString()}</td>
+                        <td><button type="button" class="btn btn-danger btn-sm" onclick="xoa('${mamh}')">Xóa</button></td>
+                    </tr>`;
+
+            document.querySelector("#tblChiTiet tbody").insertAdjacentHTML("beforeend", row);
+            const hidden = `
+                    <input type="hidden" name="mamh" value="${mamh}" id="mamh_${mamh}" />
+                    <input type="hidden" name="soluong" value="${soluong}" id="soluong_${mamh}" />`;
+            document.getElementById("hidden").insertAdjacentHTML("beforeend", hidden);
+            count++;
+        });
+        function xoa(mamh) {
+            const row = document.getElementById("row_" + mamh);
+            if (row) row.remove();
+            const m = document.getElementById("mamh_" + mamh);
+            const s = document.getElementById("soluong_" + mamh);
+            if (m) m.remove();
+            if (s) s.remove();
+        }
+        $("#soluong").on("input", function () {
+            const max = parseInt(this.max);
+            if (this.value > max) {
+                this.value = max;
+            }
+        });
+        $(document).ready(function () {
+            function maxgia() {
+                const select = document.getElementById("mamh");
+                const max = parseFloat(select.options[select.selectedIndex].getAttribute("data-sl"));
+                document.getElementById("soluong").setAttribute("max", max);
+                if (max != 0) { document.getElementById("soluong").min = 1 }
+                else { document.getElementById("soluong").min = 0 };
+            }
+            maxgia();
+            $("#mamh").change(maxgia);
+        });
+    </script>
+}
+

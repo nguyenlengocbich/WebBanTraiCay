@@ -1,0 +1,367 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <title>MuiNeFruit</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/animate/animate.min.css" rel="stylesheet">
+    <link href="~/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/style.css" rel="stylesheet">
+    <link href="~/css/cssdemo.css" rel="stylesheet">
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div id="spinner"
+         class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border text-info" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- Topbar End -->
+    <!-- Navbar & Hero Start -->
+    <div class="container-fluid nav-bar p-0" style="background-color: #15ed15">
+        <div class="row gx-0 px-5 align-items-center">
+            <div class="col-md-4 d-none d-lg-block col-lg-3 text-center text-lg-start">
+                <div class="d-inline-flex align-items-center">
+                    <a class="navbar-brand me-0 d-flex align-items-center" href="@Url.Action("Index", "MuiNeFruit")">
+                        <img src="~/Hinh/logo.jpg" alt="Logo" style="width:100px; height: 50px; margin-right: 5px;" />
+                        <span class="fw-bold" style="color:#2e7d32; font-size:30px;">MuiNeFruit</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4 text-center d-none d-lg-block">
+                <div class="col-md-12 mx-auto position-relative py-3">
+                    @using (Html.BeginForm("Shop", "MuiNeFruit", FormMethod.Post))
+                    {
+                        <div class="d-flex border border-primary rounded-pill overflow-hidden bg-white shadow-sm">
+                            <input id="input-search" name="search" class="form-control border-0 py-2 ps-4" type="text" placeholder="Tìm kiếm sản phẩm...">
+                            <button type="submit" class="btn btn-primary px-4 border-0">
+                                <i class="fa fa-search text-white"></i>
+                            </button>
+                        </div>
+                    }
+                    <div id="search-suggestions" class="dropdown-menu w-100 shadow border-0 mt-2 p-3" style="display: none; position: absolute; top: 100%; left: 0; z-index: 9999; border-radius: 15px;">
+                        <div id="suggestion-results">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand d-block d-lg-none me-0 d-flex align-items-center" href="@Url.Action("Index", "MuiNeFruit")">
+                        <img src="~/Hinh/logo.jpg" alt="Logo" style="width:100px; height: 50px; margin-right: 5px;" />
+                        <span class="fw-bold" style="color:#2e7d32; font-size:30px;">MuiNeFruit</span>
+                    </a>
+                    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars fa-1x"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <div class="navbar-nav ms-auto py-0">
+                            <a href="@Url.Action("Index","MuiNeFruit")" style="align-items: center" class="d-flex nav-item nav-link active">Trang Chủ</a>
+                            <a href="@Url.Action("Shop","MuiNeFruit")" style="align-items: center" class="d-flex nav-item nav-link">Cửa Hàng</a>
+                            <a href="@Url.Action("Contact","MuiNeFruit")" style="align-items: center" class="d-flex nav-item nav-link">Liên Hệ</a>
+                            @Html.Action("LoadCart", "MuiNeFruit")
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @if (ViewBag.role != null && (ViewBag.role == "admin" || ViewBag.role == "nv"))
+                                    {
+                                        <img src="@Url.Content("~/HinhNV/" + ViewBag.avatar)" alt="Avatar" class="avatar rounded-circle me-2" title="@User.Identity.Name">
+                                    }
+                                    else
+                                    {
+                                        <img src="@Url.Content("~/HinhKH/" + ViewBag.avatar)" alt="Avatar" class="avatar rounded-circle me-2" title="@User.Identity.Name">
+                                    }
+                                    <span class="d-sm-inline-block" style="font-size: 17px">@User.Identity.Name</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <div class="px-3 py-2">
+                                        @if (ViewBag.role != null && (ViewBag.role == "admin" || ViewBag.role == "nv"))
+                                        {
+                                            <img src="@Url.Content("~/HinhNV/" + ViewBag.avatar)" class="avatar-large rounded-circle mb-2" alt="Avatar">
+                                            <p style="font-size: 17px;text-align:center;margin-bottom:0px">@ViewBag.hoten</p>
+                                        }
+                                        else
+                                        {
+                                            <img src="@Url.Content("~/HinhKH/" + ViewBag.Avatar)" class="avatar-large rounded-circle mb-2" alt="Avatar">
+                                            <p style="font-size: 17px; text-align: center; margin-bottom: 0px">@ViewBag.hoten</p>
+                                        }
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    @if (ViewBag.role != null && ViewBag.role != "admin" && ViewBag.role != "nv")
+                                    {
+                                        <a class="dropdown-item" href="@Url.Action("UserProfile", "Account", new { id = 1 })">
+                                            <i class="fa fa-user"></i> Xem Profile
+                                        </a>
+                                    }
+                                    <a class="dropdown-item" href="@Url.Action("PasswordChange", "Account")">
+                                        <i class="fa fa-cog"></i> Đổi mật khẩu
+                                    </a>
+                                    <a class="dropdown-item" href="@Url.Action("History", "MuiNeFruit")">
+                                        <i class="fa fa-list-alt"></i> Lịch sử mua hàng
+                                    </a>
+                                    @if (ViewBag.role != null && (ViewBag.role == "admin" || ViewBag.role == "nv"))
+                                    {
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Home")">
+                                            <i class="fa fa-exchange"></i> Trang quản lý
+                                        </a>
+                                    }
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="@Url.Action("Logout", "Account")">
+                                        <i class="fa fa-sign-out"></i> Đăng xuất
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <a href="#" class="btn-primary d-flex align-items-center justify-content-center">
+                                    @Html.ActionLink("Đăng nhập", "Login", "Account", new { area = "" }, new { @class = "d-flex nav-link fw-semibold", style = "color:#1b5e20;font-size:17px;align-items: center" })
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <!-- Navbar & Hero End -->
+    @RenderBody()
+    <!-- Footer Start -->
+    <div class="container-fluid footer py-1 wow fadeIn" data-wow-delay="0.2s">
+        <div class="container py-1">
+            <div class="row g-4 rounded" style="background: rgba(255, 255, 255, .03);">
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                             style="width: 70px; height: 70px;">
+                            <i class="fa fa-map-marker fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">Địa chỉ</h4>
+                            <p class="mb-2">409 Trần Quý Cáp, xã Tiến Lợi, Phan Thiết</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                             style="width: 70px; height: 70px;">
+                            <i class="fa fa-envelope fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">Email</h4>
+                            <p class="mb-2">MuiNeFruit@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                             style="width: 70px; height: 70px;">
+                            <i class="fa fa-phone fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">Số điện thoại</h4>
+                            <p class="mb-2">(+84) 386 593 309</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="rounded p-4">
+                        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center mb-4"
+                             style="width: 70px; height: 70px;">
+                            <i class="fa fa-globe fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white">MuiNeFruit.site</h4>
+                            <p class="mb-2">(+84) 362 964 681</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+    <!-- Copyright Start -->
+    <div class="container-fluid py-4" style="background-color: #15ed15">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-md-0">
+                    <span class="text-white">
+                        <a href="#" class="border-bottom text-white">
+                            <i class="fa fa-copyright text-light me-2"></i>MuiNeFruit
+                        </a>, All right reserved.
+                    </span>
+                </div>
+                <div class="col-md-6 text-center text-md-end text-white">
+                    Thiết kế bởi <a class="border-bottom text-white" href="#">Nhóm 1-K15THO2</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+    <!-- Back to Top -->
+    <!-- JavaScript Libraries -->
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/wow/wow.min.js"></script>
+    <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
+    <!-- Template Javascript -->
+    <script src="~/js/main.js"></script>
+    <script src="~/Scripts/sweetalert2@11.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on('click', '.js-addcart', function (e) {
+                e.preventDefault();
+                var idproduct = $(this).data('id');
+                var tenmh = $(this).data('name');
+                var quantity = 1;
+                var $quantityInput = $('#quantity-input-' + idproduct);
+                if ($quantityInput.length > 0) {
+                    quantity = parseInt($quantityInput.val()) || 0;
+                }
+                if (quantity == 0) {
+                    Swal.fire("Thất bại", "Không thể đặt hàng với số lượng là 0", "error");
+                    return;
+                }
+                if (@User.Identity.IsAuthenticated.ToString().ToLower()) {
+                    addWish(idproduct, tenmh,quantity);
+                } else {
+                    Swal.fire("Bạn vui lòng đăng nhập để thực hiện đặt hàng");
+                }
+            });
+            function addWish(idproduct, tenmh, quantity) {
+                $.ajax({
+                    url: '@Url.Action("AddCart","MuiNeFruit")',
+                    method: "POST",
+                    data: { id: idproduct, sl:quantity },
+                    success: function (response) {
+                        if (response.success) {
+                            var $icon = $('.icon-cart');
+                            var currentNotify = parseInt($('.icon-cart').attr('data-notify')) || 0;
+                            var newValue = Math.max(0, currentNotify + quantity);
+                            $icon.attr('data-notify', newValue);
+                            $icon.removeClass('icon-cart').hide().show(0).addClass('icon-cart');
+                            loadCart();
+                            Swal.fire(tenmh, "Đã thêm "+quantity+" mặt hàng vào giỏ hàng!", "success");
+                        }
+                        else {
+                            Swal.fire("Thất bại", "Không thể thêm sản phẩm này", "error");
+                        }
+                    }
+                });
+            }
+            $('#input-search').on('keyup input', function () {
+                var query = $(this).val().trim();
+                var suggestionBox = $('#search-suggestions');
+                var result = $('#suggestion-results');
+                if (query.length > 0) {
+                    $.ajax({
+                        url: '@Url.Action("SearchMH", "MuiNeFruit")',
+                        type: 'POST',
+                        data: { input: query },
+                        success: function (response) {
+                            result.html(response);
+                            suggestionBox.fadeIn(200);
+                        }
+                    });
+                } else {
+                    suggestionBox.fadeOut(100);
+                }
+            });
+            updateTongCong();
+            $(document).click(function (e) {
+                if (!$(e.target).closest('.position-relative').length) {
+                    $('#search-suggestions').fadeOut(100);
+                }
+            });
+        });
+        function updatesl(idproduct, change) {
+            $.ajax({
+                url: '@Url.Action("UpdateQuantity", "MuiNeFruit")',
+                type: 'POST',
+                data: { id: idproduct, change: change },
+                success: function (response) {
+                    if (response.success) {
+                        var $icon = $('.icon-cart');
+                        var currentNotify = parseInt($('.icon-cart').attr('data-notify')) || 0;
+                        var newValue = Math.max(0, currentNotify + change);
+                        $icon.attr('data-notify', newValue);
+                        $icon.removeClass('icon-cart').hide().show(0).addClass('icon-cart');
+                        loadCart();
+                        loadCartPage();
+                        updateTongCong();
+                    }
+                    else if (response.message) {
+                       Swal.fire("Thông báo", response.message, "warning");
+                    }
+                }
+            });
+        }
+        function loadCartPage() {
+            $.ajax({
+                url: '@Url.Action("LoadCartPage", "MuiNeFruit")',
+                type: 'POST',
+                success: function (response) {
+                    $('#bodycart').html(response.trim());
+                }
+            });
+        }
+        function loadCart() {
+            $.ajax({
+                url: '@Url.Action("LoadCart", "MuiNeFruit")',
+                type: 'POST',
+                success: function (response) {
+                    $('#inner-cart-items').html($(response).find('#inner-cart-items').html());
+                    $('.dropdown-menu').on('click', function (e) {
+                        e.stopPropagation();
+                    });
+                }
+            });
+        }
+        function remove(idproduct) {
+            $.ajax({
+                url: '@Url.Action("remove", "MuiNeFruit")',
+                type: 'POST',
+                data: { id: idproduct },
+                success: function (response) {
+                    if (response.success) {
+                        var $icon = $('.icon-cart');
+                        var currentNotify = parseInt($('.icon-cart').attr('data-notify')) || 0;
+                        $('.icon-cart').attr('data-notify', Math.max(0, currentNotify - response.removedQty));
+                        $icon.removeClass('icon-cart').hide().show(0).addClass('icon-cart');
+                        loadCart();
+                        loadCartPage();
+                        updateTongCong();
+                    }
+                }
+            });
+        }
+        function updateTongCong() {
+            var tong = 0;
+            $('.item-thanhtien').each(function () {
+                var value = parseInt($(this).data('value'));
+                tong += value;
+            });
+            $('#thanhtien').text(tong.toLocaleString('vi-VN') + " VNĐ");
+        }
+    </script>
+    @RenderSection("Scripts", required: false)
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <script>
+        Swal.fire({
+            title: 'Thành công!',
+            text: '@Html.Raw(TempData["SuccessMessage"])',
+            icon: 'success',
+            confirmButtonText: 'Đồng ý',
+            timer: 5000,
+            timerProgressBar: true
+        });
+        </script>
+    }
+</body>
+</html>

@@ -1,0 +1,77 @@
+﻿@model WebBanTraiCay.Models.nhanvien
+
+@{
+    ViewBag.Title = "Chi Tiết Nhân Viên";
+}
+<style>
+    .dl-horizontal dt {
+        float: left;
+        width: 160px;
+        font-weight: bold;
+    }
+
+    .dl-horizontal dd {
+        margin-left: 180px;
+        margin-bottom: 10px;
+    }
+</style>
+<h2>Thông Tin Nhân Viên</h2>
+
+<div class="row" style="font-family:Arial, sans-serif;font-size:20px;align-items:center">
+    <h4>Nhân Viên</h4>
+    <hr />
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                Tên Nhân Viên
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.tennv)
+            </dd>
+
+            <dt>
+                Địa Chỉ
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.diachi)
+            </dd>
+
+            <dt>
+                Số Điện Thoại
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.sdtnv)
+            </dd>
+
+            <dt>
+                Lương Căn Bản
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.luongcb)
+            </dd>
+
+            <dt>
+                Hệ Số Lương
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.hesoluong)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <dl>
+            <dd>
+                <img src="~/HinhNV/@Url.Content(Model.hinhanhnv)" style="width:60%;height:60%" />
+            </dd>
+        </dl>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Chỉnh Sửa", "Edit", new { id = Model.manv }) |
+    @Html.ActionLink("Quay Lại", "Index")
+</p>

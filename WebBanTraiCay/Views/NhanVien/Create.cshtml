@@ -1,0 +1,101 @@
+﻿@model WebBanTraiCay.Models.nhanvien
+
+@{
+    ViewBag.Title = "Thêm Nhân Viên";
+}
+<style>
+    .form-group {
+        padding-left: 20%;
+        padding-right: 20%;
+        align-items: center;
+    }
+
+    .form-horizontal {
+        font-size: 20px;
+    }
+
+        .form-horizontal .col-md-9 .form-control {
+            width: 80% !important;
+            box-sizing: border-box;
+            max-width: 80% !important;
+        }
+</style>
+<h2>Thêm Nhân Viên</h2>
+
+@using (Html.BeginForm("Create", "NhanVien", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal" style="background-color:cornsilk">
+    <h4 style="text-align:center;padding-top:10px">Nhân Viên</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group row mb-3">
+        <label class="control-label col-md-3">Tên Nhân Viên:</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.tennv, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.tennv, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="control-label col-md-3">Địa Chỉ:</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px",@required = "required" } })
+            @Html.ValidationMessageFor(model => model.diachi, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="control-label col-md-3">Số Điện Thoại:</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.sdtnv, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px",@required = "required", @pattern = "[0-9]{10,11}" } })
+            @Html.ValidationMessageFor(model => model.sdtnv, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="control-label col-md-3">Lương Cơ Bản:</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.luongcb, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px",@min="1000000",@type = "number",@required ="required" } })
+            @Html.ValidationMessageFor(model => model.luongcb, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row mb-3">
+        <label class="control-label col-md-3">Hệ Số Lương:</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.hesoluong, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px",@min="1",@type="number", @step="0.1",@max = "9", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.hesoluong, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group row mb-3" style="align-items:center">
+        <label class="control-label col-md-3">Hình Ảnh Nhân Viên</label>
+        <div class="col-md-9">
+            <input class="form-control" title="Up load hình ảnh nhân viên" type="file" name="hinhanhnv" required />
+            @Html.ValidationMessageFor(model => model.hinhanhnv, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row mb-4">
+        <div class="col-md-3"></div> <div class="col-md-9">
+            <div class="form-check form-switch d-flex align-items-center">
+                <input class="form-check-input custom-checkbox" type="checkbox" name="capTaiKhoan" id="capTaiKhoan">
+                <label class="form-check-label ms-3 fw-bold text-primary" for="capTaiKhoan" style="font-size: 18px; cursor: pointer;">
+                    Cấp tài khoản hệ thống cho nhân viên này
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row mb-3" style="align-items:center;padding-bottom:20px">
+        <div class="col-md-5"></div>
+        <div class="col-md-offset-7 col-md-7">
+            <input style="font-size:20px" type="submit" value="Thêm" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại", "Index")
+</div>

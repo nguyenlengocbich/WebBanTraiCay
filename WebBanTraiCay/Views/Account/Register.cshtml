@@ -1,0 +1,139 @@
+﻿@model WebBanTraiCay.Models.AccountKH
+@{
+    ViewBag.Title = "Register";
+}
+<style>
+    body {
+        background: linear-gradient(to right, #74ebd5, #ACB6E5);
+    }
+
+    .container body-content {
+        width: 100% !important;
+        margin: 100px auto;
+        background-color: #ffffff;
+        padding: 40px 30px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    form {
+        max-width: 300px !important;
+        margin-left: 40% !important;
+        margin-right: 40% !important;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+        font-weight: 600;
+        font-size: 28px;
+    }
+
+    label {
+        font-weight: 500;
+        margin-bottom: 6px;
+        display: block;
+        color: #555;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        padding: 0;
+    }
+
+    input.form-control,
+    button.btn {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .form-control {
+        height: 45px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 10px 15px;
+        font-size: 15px;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .text-danger {
+        font-size: 14px;
+        color: #dc3545;
+    }
+
+    .thuonghieu {
+        text-align: center;
+        font-size: 36px;
+        font-weight: bold;
+        color: #40c361;
+        font-style: revert-layer;
+    }
+</style>
+<h2 class="thuonghieu">MUINEFRUIT</h2>
+<h2 class="text-center">Đăng Ký Tài Khoản Nhân Viên</h2>
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <h4>Thông tin khách hàng</h4>
+    <div class="form-group">
+        <label>Họ Và Tên</label>
+        @Html.TextBoxFor(m => m.hovaten, new { @class = "form-control", placeholder = "Nhập họ và tên" })
+        @Html.ValidationMessageFor(m => m.hovaten, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label>Số Điện Thoại</label>
+        @Html.TextBoxFor(m => m.sodienthoai, new { @class = "form-control", placeholder = "Nhập số điện thoại" })
+        @Html.ValidationMessageFor(m => m.sodienthoai, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label>Địa chỉ</label>
+        @Html.TextBoxFor(m => m.diachi, new { @class = "form-control", placeholder = "Nhập địa chỉ" })
+        @Html.ValidationMessageFor(m => m.diachi, "", new { @class = "text-danger" })
+    </div>
+    <hr />
+    <h4>Thông tin tài khoản</h4>
+    <div class="form-group">
+        <label>Tên đăng nhập</label>
+        @Html.TextBoxFor(m => m.tendn, new { @class = "form-control", placeholder = "Nhập tên đăng nhập" })
+        @Html.ValidationMessageFor(m => m.tendn, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label>Mật khẩu</label>
+        @Html.PasswordFor(m => m.matkhau, new { @class = "form-control", placeholder = "Nhập mật khẩu" })
+        @Html.ValidationMessageFor(m => m.matkhau, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        <label>Xác nhận mật khẩu</label>
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Nhập lại mật khẩu" })
+        @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+    </div>
+    <div class="text-danger mt-3">@ViewBag.Error</div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Đăng ký</button>
+    </div>
+}
+

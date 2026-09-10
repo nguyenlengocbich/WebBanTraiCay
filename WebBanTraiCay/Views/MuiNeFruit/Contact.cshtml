@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6 wow fadeInUp" data-wow-delay="0.1s">Liên Hệ</h1>
+    <ol class="breadcrumb justify-content-center mb-0 wow fadeInUp" data-wow-delay="0.3s">
+        <li class="breadcrumb-item"><a href="@Url.Action("Index","MuiNeFruit")">Trang Chủ</a></li>
+        <li class="breadcrumb-item active text-white">Liên Hệ</li>
+    </ol>
+</div>
+<div class="container-fluid contact py-5">
+    <div class="container py-5">
+        <div class="p-5 bg-light rounded">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="text-center mx-auto wow fadeInUp" data-wow-delay="0.1s" style="max-width: 900px;">
+                        <h4 class="text-primary border-bottom border-primary border-2 d-inline-block pb-2">
+                            Get in
+                            touch
+                        </h4>
+                        <p class="mb-5 fs-5 text-dark">
+                            Nếu bạn có thắc mắc gì, có thể gửi yêu cầu cho chúng tôi, và chúng tôi sẽ liên lạc lại với bạn sớm nhất có thể .
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <h5 class="text-primary wow fadeInUp" data-wow-delay="0.1s">Yêu Cầu Liên Hệ</h5>
+                    <h1 class="display-5 mb-4 wow fadeInUp" data-wow-delay="0.3s">Gửi Email Cho Chúng Tôi</h1>
+                    @using (Html.BeginForm("Contact", "MuiNeFruit", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row g-4 wow fadeInUp" data-wow-delay="0.1s">
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" required name="email" id="email" placeholder="Your Email">
+                                    <label for="email">Email của bạn</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" required name="subject" id="subject" placeholder="Subject">
+                                    <label for="subject">Tiêu đề</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating message">
+                                    <textarea class="form-control" name="noidung" required placeholder="Leave a message here" id="message" style="height: 160px" cols="500"></textarea>
+                                    <label for="message">Nội dung</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary w-100 py-3">Gửi Email</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-lg-5 wow fadeInUp" data-wow-delay="0.2s">
+                    <div class="h-100 rounded">
+                        <iframe class="rounded w-100" style="height: 100%;" 
+                                src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=409 Trân Quý Cáp&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    @if (TempData["ThongBao"] != null)
+    {
+        <script>
+            Swal.fire('Thông Báo','@TempData["ThongBao"]','success');
+        </script>
+    }
+}
+

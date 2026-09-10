@@ -1,0 +1,97 @@
+﻿@model WebBanTraiCay.Models.mathang
+
+@{
+    ViewBag.Title = "Chi Tiết Mặt Hàng";
+}
+<style>
+    .dl-horizontal dt {
+        float: left;
+        width: 160px;
+        font-weight: bold;
+    }
+
+    .dl-horizontal dd {
+        margin-left: 180px;
+        margin-bottom: 10px;
+    }
+</style>
+<h2>Chi Tiết Mặt Hàng</h2>
+
+<div class="row" style="font-family:Arial, sans-serif;font-size:20px;align-items:center">
+    <h4>Mặt Hàng</h4>
+    <hr />
+    <div class="col-md-6">
+        <dl class="dl-horizontal">
+            <dt>
+                Tên Mặt Hàng
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.tenmh)
+            </dd>
+
+            <dt>
+                Loại Mặt Hàng
+            </dt>
+
+            <dd>
+                @ViewBag.tenloai
+            </dd>
+
+            <dt>
+                Số Lượng
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.soluong)
+            </dd>
+
+            <dt>
+                Giá Bán
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.giaban)
+            </dd>
+
+            <dt>
+                Đơn Vị Tính
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.dvtinh)
+            </dd>
+
+            <dt>
+                Tình Trạng
+            </dt>
+
+            <dd style="color:@(Model.tinhtrang == "Còn hàng" ? "#00a108" : "#fb0000f2")">
+                @Html.DisplayFor(model => model.tinhtrang)
+            </dd>
+
+            <dt>
+                Mô Tả
+            </dt>
+
+            <dd style="text-align:justify">
+                @Html.DisplayFor(model => model.mota)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-6">
+        <dl>
+            <dd>
+                <img src="~/Hinh/@Url.Content(Model.hinhanhmh)" style="width:60%;height:60%" />
+            </dd>
+        </dl>
+    </div>
+</div>
+<h3>Thông tin các đơn hàng đã được lập</h3>
+<div id="dsChiTiet">
+    @Html.Action("MathangDetails", new { id = Model.mamh })
+</div>
+<p>
+    @Html.ActionLink("Chỉnh Sửa", "Edit", new { id = Model.mamh }) |
+    @Html.ActionLink("Quay Lại", "Index")
+</p>

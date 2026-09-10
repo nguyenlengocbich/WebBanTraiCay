@@ -1,0 +1,96 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.nhanvien>
+
+@{
+    ViewBag.Title = "Nhân Viên";
+}
+<h2>Danh Sách Nhân Viên</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <div id="search" style="flex: 1;">
+        <div style="display: flex; gap: 30px;">
+            <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                <label for="textsearch" style="white-space: nowrap; font-weight: 500;">Nhập tên nhân viên:</label>
+                <input required id="textsearch" name="textsearch" type="text"
+                       style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;" />
+            </div>
+            <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                <label for="textdiachi" style="white-space: nowrap; font-weight: 500;">Nhập địa chỉ:</label>
+                <input id="textdiachi" name="textdiachi" type="text"
+                       style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;" />
+            </div>
+        </div>
+    </div>
+    <button onclick="location.href='@Url.Action("Create", "NhanVien")'"
+            style="padding: 10px 16px; background-color: #007bff; color: white; border: none;
+                   border-radius: 6px; font-weight: bold; cursor: pointer; white-space: nowrap; height: 42px;">
+        Thêm Nhân Viên Mới
+    </button>
+</div>
+@if (TempData["Xoa"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["Xoa"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["ThongBao"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+<div id="nvtable">
+    <table id="myTable" class="display table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+        <thead>
+            <tr class="table-primary" style="color:crimson">
+                <th>
+                    Mã Nhân Viên
+                </th>
+                <th>
+                    Tên Nhân Viên
+                </th>
+                <th>
+                    Địa chỉ
+                </th>
+                <th>
+                    Số điện thoại
+                </th>
+                <th>
+                    Lương Căn Bản
+                </th>
+                <th>
+                    Hệ Số Lương
+                </th>
+                <th class="col-actions">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            @Html.Action("SearchNV")
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            function searchNV() {
+                const ten = $('#textsearch').val();
+                const diachi = $('#textdiachi').val();
+                $.ajax({
+                    url: '@Url.Action("SearchNV", "NhanVien")',
+                    type: 'POST',
+                    data: {
+                        txtsearch: ten,
+                        txtdiachi: diachi
+                    },
+                    success: function (result) {
+                        $('#tbody').html(result);
+                    },
+                });
+            }
+            $('#textsearch').on('keyup', searchNV);
+            $('#textdiachi').on('keyup', searchNV);
+        });
+    </script>
+}

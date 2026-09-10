@@ -1,0 +1,68 @@
+﻿@model WebBanTraiCay.Models.khachhang
+
+@{
+    ViewBag.Title = "Chỉnh Sửa";
+}
+<style>
+    .form-group {
+        padding-left: 20%;
+        padding-right: 20%;
+        align-items: center;
+    }
+    .form-horizontal {
+        font-size: 20px;
+    }
+    .form-horizontal .col-md-9 .form-control {
+        width: 80% !important;
+        box-sizing: border-box;
+        max-width: 80% !important;
+    }
+</style>
+<h2>Chỉnh Sửa Khách Hàng</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal" style="background-color:cornsilk">
+        <h4 style="text-align:center;padding-top:10px">Khách Hàng</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.makh)
+
+        <div class="form-group row mb-3">
+            <label class="control-label col-md-3">Tên Khách Hàng:</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.tenkh, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.tenkh, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row mb-3">
+            <label class="control-label col-md-3">Số Điện Thoại:</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.sdt, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px", @required = "required", @pattern = "[0-9]{10,11}" } })
+                @Html.ValidationMessageFor(model => model.sdt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row mb-3">
+            <label class="control-label col-md-3">Địa Chỉ:</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.diachi, new { htmlAttributes = new { @class = "form-control", style = "font-size:20px", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.diachi, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group row mb-3" style="align-items:center;padding-bottom:20px">
+            <div class="col-md-5"></div>
+            <div class="col-md-offset-2 col-md-7">
+                <input style="font-size:20px" type="submit" value="Lưu Thay Đổi" class="btn btn-success" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Quay Lại", "Index")
+</div>

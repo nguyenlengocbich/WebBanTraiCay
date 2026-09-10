@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.Sp_XemPNResult>
+    @if (Model.Count() != 0)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.mapn)
+                </td>
+                <td>
+                    @item.ngaynhap.ToString("dd/MM/yyyy")
+                </td>
+                <td class="col-wrap">
+                    @Html.DisplayFor(modelItem => item.tenncc)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tennv)
+                </td>
+                <td class="col-actions">
+                    @Html.ActionLink("Cập Nhật", "Edit", new { id = item.mapn }, new { @class = "btn btn-primary" }) |
+                    @Html.ActionLink("Chi Tiết", "Details", new { id = item.mapn }, new { @class = "btn btn-info" }) |
+                    @Html.ActionLink("Xóa", "Delete", new { id = item.mapn }, new { @class = "btn btn-danger btn-delete", data_role=ViewBag.role })
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="5">Không có dữ liệu</td>
+        </tr>
+    }

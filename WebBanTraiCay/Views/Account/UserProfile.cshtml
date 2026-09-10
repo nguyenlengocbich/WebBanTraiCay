@@ -1,0 +1,87 @@
+﻿@model WebBanTraiCay.Models.khachhang
+
+@{
+    ViewBag.Title = "UserProfile";
+    Layout = "~/Views/Shared/_LayoutFrontEnd.cshtml";
+}
+<div class="container py-5">
+    @using (Html.BeginForm("UpdateProfile", "Account", new { returnUrl = ViewBag.ReturnUrl, i = 1 }, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-md-4 text-center mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <img src="~/HinhKH/@ViewBag.avatar" id="previewImg" style="width: 180px; height: 180px; object-fit: cover; border-radius: 50%; border: 4px solid #4caf50;" />
+                        </div>
+                        <h5 class="card-title text-success mb-3">Ảnh đại diện</h5>
+                        <div class="mb-3">
+                            <label for="fileUpload" class="btn btn-outline-success btn-sm w-100">
+                                <i class="fa fa-camera"></i> Chọn ảnh mới
+                            </label>
+                            <input type="file" name="hinhanh" id="fileUpload" style="display:none;" onchange="previewFile(this);" accept="image/*" />
+                            <small class="text-muted d-block mt-2" id="fileNameLabel">Chưa chọn ảnh mới</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Thông tin cá nhân</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="fw-bold">Họ và tên:</label>
+                            <input type="text" name="hoten" value="@Model.tenkh" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="fw-bold">Số điện thoại:</label>
+                            <input type="text" required name="sdt" value="@Model.sdt" class="form-control" pattern="[0-9]{10,11}" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="fw-bold">Địa chỉ:</label>
+                            <textarea  name="diachi" required class="form-control" rows="2">@Model.diachi</textarea>
+                        </div>
+
+                        <hr />
+                        <div class="text-end mt-3">
+                            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                            <a href="@(ViewBag.ReturnUrl==null?Url.Action("Index","MuiNeFruit"):ViewBag.ReturnUrl)" class="btn btn-secondary me-2">Hủy bỏ</a>
+                            <button type="submit" class="btn btn-success px-4 fw-bold">
+                                <i class="fa fa-save"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@section Scripts{
+    <script>
+        function previewFile(input) {
+            var file = input.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var output = document.getElementById('previewImg');
+                    output.src = reader.result;
+                    document.getElementById('fileNameLabel').innerText = file.name;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+    @if (TempData["ThongBao"] != null)
+    {
+        <script>
+             Swal.fire('Thông Báo','@TempData["ThongBao"]','success','Đồng ý');
+        </script>
+    }
+}
+
+

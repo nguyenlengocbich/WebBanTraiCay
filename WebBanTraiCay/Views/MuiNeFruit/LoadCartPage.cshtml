@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.giohang>
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        int thanhtien = 0;
+        WebBanTraiCay.Models.mathang a = (ViewBag.mathang as List<WebBanTraiCay.Models.mathang>).FirstOrDefault(x => x.mamh == item.mamh);
+        thanhtien += a.giaban * item.soluong;
+        <tr class="align-middle">
+            <td scope="row">
+                <p class="mb-0 text-dark fw-bold">@a.tenmh</p>
+            </td>
+            <td>
+                <img class="rounded shadow-sm" src="~/Hinh/@Url.Content(a.hinhanhmh)" style="width:85px;height:85px" />
+            </td>
+            <td>
+                <div style="width: 100px;" class="quantity-control d-flex align-items-center border rounded-pill bg-white shadow-sm">
+                    <button class="btn btn-sm btn-link text-dark p-0 ps-2" onclick="updatesl('@item.mamh', -1)">
+                        <i class="fa fa-minus small"></i>
+                    </button>
+                    <span class="flex-grow-1 text-center fw-bold" style="font-size: 14px;">@item.soluong</span>
+                    <button class="btn btn-sm btn-link text-dark p-0 pe-2" onclick="updatesl('@item.mamh', 1)">
+                        <i class="fa fa-plus small"></i>
+                    </button>
+                </div>
+            </td>
+            <td>
+                <p class="mb-0">@a.giaban.ToString("#,##0") <small>VNĐ</small></p>
+            </td>
+            <td class="item-thanhtien" data-value="@thanhtien">
+                <p class="mb-0 fw-bold text-primary">@thanhtien.ToString("#,##0") <small>VNĐ</small></p>
+            </td>
+            <td>
+                <button class="btn btn-outline-danger btn-sm rounded-circle" onclick="remove('@item.mamh')" title="Xóa" style="width:32px; height:32px;">
+                    <i class="fa fa-times"></i>
+                </button>
+            </td>
+        </tr>
+    }
+}
+else
+{
+    <tr>
+        <td colspan="6" style="text-align:center">Giỏ hàng rỗng</td>
+    </tr>
+}

@@ -1,0 +1,211 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.Sp_XemPNResult>
+
+@{
+    ViewBag.Title = "Phiếu Nhập";
+}
+<style>
+    .filter-section {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        max-width: 2000px;
+        background-color: cornsilk;
+        margin-bottom: 20px;
+    }
+
+        .filter-section h3 {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+
+    .filter-row {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+
+    .filter-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .filter-group label {
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .filter-group input,
+        .filter-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+    .filter-inline {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 20px;
+        font-family: Arial, sans-serif;
+    }
+
+    .filter-row-horizontal {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .filter-inline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+        .filter-inline label {
+            font-weight: 500;
+            color: #555;
+            white-space: nowrap;
+        }
+
+        .filter-inline input {
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+    .filter-row-horizontal-wide {
+        display: flex;
+        justify-content: space-between;
+        gap: 40px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+
+    .filter-inline-wide {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+    }
+
+        .filter-inline-wide label {
+            font-weight: 500;
+            color: #555;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        .filter-inline-wide input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+</style>
+<h2>Danh Sách Phiếu Nhập</h2>
+<div class="filter-section">
+    <h3>Lọc Dữ Liệu</h3>
+    <div class="filter-row-horizontal-wide">
+        <div class="filter-inline-wide">
+            <label for="dateFrom">Ngày nhập từ:</label>
+            <input id="dateFrom" name="dateFrom" type="date" />
+        </div>
+        <div class="filter-inline-wide">
+            <label for="dateTo">đến:</label>
+            <input id="dateTo" name="dateTo" type="date" />
+        </div>
+    </div>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 20px;">
+    <div id="search" style="flex: 1;">
+        <div style="display: flex; gap: 30px;">
+            <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                <label for="textsearch" style="white-space: nowrap; font-weight: 500;">Nhập tên nhà cung cấp:</label>
+                <input id="textsearch" name="textsearch" type="text"
+                       style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;" />
+            </div>
+            <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                <label for="textNhanVien" style="white-space: nowrap; font-weight: 500;">Nhập tên nhân viên:</label>
+                <input required id="textNhanVien" name="textNhanVien" type="text"
+                       style="flex: 1; padding: 10px; border-radius: 6px; border: 1px solid #ccc; font-size: 14px;" />
+            </div>
+        </div>
+    </div>
+    <button onclick="location.href='@Url.Action("Create", "PhieuNhap")'"
+            style="padding: 10px 16px; background-color: #007bff; color: white; border: none;
+                   border-radius: 6px; font-weight: bold; cursor: pointer; white-space: nowrap; height: 42px;">
+        Thêm Phiếu Nhập Mới
+    </button>
+</div>
+@if (TempData["ThongBao"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["ThongBao"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+}
+<div id="PNtable">
+    <table id="myTable" class="display table table-bordered table-striped" style="text-align: center; vertical-align: middle;font-family:Arial, sans-serif">
+        <thead>
+            <tr class="table-primary" style="color:crimson">
+                <th>
+                    Mã Phiếu Nhập
+                </th>
+                <th>
+                    Ngày Nhập
+                </th>
+                <th class="col-wrap">
+                    Tên Nhà Cung Cấp
+                </th>
+                <th>
+                    Nhân Viên Lập Phiếu
+                </th>
+                <th class="col-actions">Thao Tác</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            @Html.Action("SearchPN")
+        </tbody>
+    </table>
+</div>
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            function search() {
+                const keyword = $('#textsearch').val();
+                const dateFrom = $('#dateFrom').val();
+                const dateTo = $('#dateTo').val();
+                const tennv = $('#textNhanVien').val();
+                $.ajax({
+                    url: '@Url.Action("SearchPN", "PhieuNhap")',
+                    type: 'POST',
+                    data: {
+                        txtsearch: keyword,
+                        dateFrom: dateFrom,
+                        dateTo: dateTo,
+                        tennv: tennv
+                    },
+                    success: function (result) {
+                        $('#tbody').html(result);
+                    }
+                });
+            }
+            $('#textsearch').on('keyup', search);
+            $('#dateFrom, #dateTo').on('change', search);
+            $('#textNhanVien').on('keyup', search);
+        });
+    </script>
+}

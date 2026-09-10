@@ -1,0 +1,278 @@
+﻿/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select {
+    max-width: 280px;
+}
+textarea {
+    max-width:80%;
+}
+.message textarea {
+    width: 100%;
+    max-width: 100%;
+}
+table.dataTable tbody td,
+table.dataTable thead th {
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 4px 8px !important;
+}
+th.dt-type-numeric .dt-column-header {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+th.dt-type-numeric .dt-column-order {
+    order: 2 !important;
+}
+th.dt-type-numeric .dt-column-title {
+    order: 1 !important;
+}
+td.col-actions, th.col-actions {
+    white-space: nowrap !important; /* Không bao giờ xuống dòng */
+    text-align: center !important;
+    vertical-align: middle;
+}
+table.dataTable {
+    width: 100% !important;
+    table-layout: auto !important;
+}
+table.dataTable td img {
+    width: 100px !important;
+    height: 100px !important;
+    object-fit: cover !important;
+    border-radius: 6px;
+    display: block;
+    margin: 0 auto;
+}
+.dt-body-right {
+    text-align: right !important;
+}
+.dt-head-right {
+    text-align: right !important;
+}
+#myTable_wrapper .dt-layout-start {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: auto !important;
+}
+#myTable_wrapper .dt-length {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px;
+}
+@media (max-width: 767px) {
+    table.dataTable td img {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    #myTable_wrapper .dt-layout-start {
+        width: 100% !important;
+        justify-content: center !important;
+        margin-bottom: 8px;
+    }
+
+    #myTable_wrapper .dt-length {
+        justify-content: center !important;
+    }
+}
+.wrap-text {
+    white-space: normal !important;
+    word-break: break-word;
+}
+
+/* Cột KHÔNG được xuống dòng */
+.no-wrap {
+    white-space: nowrap !important;
+}
+
+.dataTables_wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table.dataTable {
+    max-width: 100% !important;
+}
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.child,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th.child {
+    padding: 8px 12px !important;
+}
+table.dataTable thead th, table.dataTable tbody td {
+    padding: 8px 10px !important;
+}
+#myTable_wrapper .dt-layout-end {
+    display: flex;
+    justify-content: flex-end;
+}
+.avatar {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+@media (max-width: 575.98px) {
+    .nav-link.dropdown-toggle .d-none.d-sm-inline-block {
+    }
+    .avatar {
+        width: 32px;
+        height: 32px;
+    }
+    .nav-link.dropdown-toggle {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+}
+.avatar-large {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 10px auto;
+}
+#cart-items-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+#cart-items-list::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 10px;
+}
+.cart-item-row:last-child {
+    border-bottom: none !important;
+}
+
+.quantity-control {
+    height: 28px;
+    transition: all 0.2s;
+}
+.quantity-control button {
+    border: none;
+    background: transparent;
+    color: #666;
+    font-weight: bold;
+}
+.quantity-control button:hover {
+    color: #ff4d4d;
+}
+.btn-remove-item {
+    background: none;
+    border: none;
+    padding: 5px;
+    font-size: 14px;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+.btn-remove-item:hover {
+    transform: scale(1.2);
+}
+.btn-remove-item i:hover {
+    color: #dc3545 !important;
+}
+.cart-summary {
+    background: #fff;
+}
+.cart-item-row {
+    transition: background 0.2s;
+}
+.form-check-input.custom-checkbox {
+    width: 3em;
+    height: 1.5em;
+    cursor: pointer;
+    border-color: #198754;
+}
+
+.form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+
+
+.form-check-label:hover {
+    color: #0d6efd !important;
+    text-decoration: underline;
+}
+
+.control-label {
+    font-weight: 600;
+    color: #444;
+    text-align: right;
+    font-size: 16px;
+}
+.select-tk {
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 5px 15px;
+    border-radius: 8px;
+    appearance: auto !important;
+}
+
+.select-tk:hover {
+    background-color: #f8f9fa !important;
+    color: #007bff;
+}
+.table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+.order-detail-container {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.table-detail thead {
+    background-color: #f8f9fa;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.product-img-detail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.total-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.info-label {
+    color: #6c757d;
+    font-weight: 500;
+}

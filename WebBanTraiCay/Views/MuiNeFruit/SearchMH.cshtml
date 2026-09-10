@@ -1,0 +1,25 @@
+﻿@model IEnumerable<WebBanTraiCay.Models.mathang>
+<h6 class="text-muted border-bottom pb-2 mb-2">Gợi ý cho bạn:</h6>
+@if (Model.Count() == 0)
+{
+    <p class="text-center small text-muted">Không tìm thấy sản phẩm nào.</p>
+}
+else
+{
+    foreach (var item in Model)
+    {
+        using (Html.BeginForm("MatHangDetail", "MuiNeFruit", new { id = item.mamh }, FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <button type="submit" class="d-flex align-items-center mb-1 text-decoration-none text-dark p-2 suggestion-item w-100 border-0 bg-transparent text-start">
+                <img src="~/Hinh/@Url.Content(item.hinhanhmh)" style="width: 45px; height: 45px; object-fit: cover;" class="rounded me-3">
+                <div class="flex-grow-1">
+                    <div class="fw-bold text-truncate" style="max-width: 250px;">@item.tenmh</div>
+                    <small class="text-primary">@item.giaban.ToString("#,##0") VNĐ</small>
+                </div>
+            </button>
+        }
+    }
+}
+
+
