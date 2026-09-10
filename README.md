@@ -73,7 +73,7 @@ File cơ sở dữ liệu/script:
 ### 1. Clone repository
 
 ```bash
-git clone https://github.com/nguyenlengocbich/webchtc.git
+git clone https://github.com/nguyenlengocbich/.git
 ```
 
 ### 2. Mở project
